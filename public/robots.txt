@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://xopamotorental.com/sitemap.xml

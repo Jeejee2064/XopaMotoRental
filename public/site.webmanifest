@@ -1,0 +1,10 @@
+{
+  "name": "XOPA Moto Rental",
+  "short_name": "XOPA",
+  "icons": [
+    { "src": "/icon.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#050507",
+  "background_color": "#050507",
+  "display": "standalone"
+}

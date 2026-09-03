@@ -1,0 +1,342 @@
+@import url('https://fonts.googleapis.com/css2?family=Saira+Condensed:wght@600;700;800;900&family=Lato:wght@400;700;900&display=swap');
+@import "tailwindcss";
+
+/*
+  XOPA MOTO RENTAL — "nuit urbaine" palette.
+  Flat colors only — no gradients, no glow, no drop shadows on brand marks.
+  See XopaMotoRental/XOPA-images/charte-*.png for the source style guide.
+*/
+@theme {
+  --color-noir: #050507;      /* dominant background */
+  --color-magenta: #F80293;   /* logo mark only — not used in UI (reads too adult in CTAs/accents) */
+  --color-jaune: #E6F802;     /* wordmark, signature accent */
+  --color-cyan: #02D6FC;      /* secondary accent, slash */
+  --color-gris: #ebebeb;      /* body copy on dark backgrounds */
+
+  --color-background: #050507;
+  --color-foreground: #ffffff;
+
+  --font-sans: "Lato", sans-serif;
+  --font-body: "Lato", sans-serif;
+  --font-heading: "Saira Condensed", sans-serif;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans);
+  }
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+  p {
+    line-height: 1.4;
+  }
+}
+
+/* ================================
+   PHONE INPUT DARK THEME — used by the booking form (react-phone-number-input).
+   Generic/reusable block, carried over from Overland's globals.css with the
+   yellow accent swapped for XOPA's jaune.
+   ================================ */
+.phone-input-dark {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+}
+
+.phone-input-dark .PhoneInputCountry {
+  position: relative;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
+  padding: 0.75rem;
+  background: #1f2937;
+  border: 2px solid #374151;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.phone-input-dark .PhoneInputCountry:hover {
+  border-color: #4b5563;
+}
+
+.phone-input-dark .PhoneInputCountry:focus-within {
+  border-color: #E6F802;
+  outline: none;
+  z-index: 20;
+}
+
+.phone-input-dark .PhoneInputCountryIcon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.phone-input-dark .PhoneInputCountryIcon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.phone-input-dark .PhoneInputCountrySelect {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 15;
+  border: 0;
+  opacity: 0;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.phone-input-dark .PhoneInputCountrySelect option {
+  background-color: #1f2937 !important;
+  color: #e5e7eb !important;
+  padding: 12px 16px !important;
+  font-size: 14px;
+}
+
+.phone-input-dark .PhoneInputCountrySelect optgroup {
+  background-color: #111827 !important;
+  color: #9ca3af !important;
+  font-weight: 600;
+}
+
+.phone-input-dark .PhoneInputCountrySelectArrow {
+  display: block;
+  content: '';
+  width: 0;
+  height: 0;
+  margin-left: 0.25rem;
+  border-style: solid;
+  border-width: 5px 4px 0 4px;
+  border-color: #9ca3af transparent transparent transparent;
+  opacity: 0.7;
+  transition: all 0.2s;
+  pointer-events: none;
+}
+
+.phone-input-dark .PhoneInputCountry:hover .PhoneInputCountrySelectArrow {
+  opacity: 1;
+  border-top-color: #e5e7eb;
+}
+
+.phone-input-dark .PhoneInputInput {
+  flex: 1;
+  min-width: 0;
+  padding: 0.75rem;
+  background: rgba(17, 24, 39, 0.5);
+  border: 2px solid #374151;
+  color: white;
+  font-size: 1rem;
+  line-height: 1.5;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.phone-input-dark .PhoneInputInput::placeholder {
+  color: #6b7280;
+}
+
+.phone-input-dark .PhoneInputInput:hover {
+  border-color: #4b5563;
+}
+
+.phone-input-dark .PhoneInputInput:focus {
+  border-color: #E6F802;
+  background: rgba(17, 24, 39, 0.7);
+}
+
+.phone-input-dark .PhoneInputInternationalIconPhone,
+.phone-input-dark .PhoneInputInternationalIconGlobe {
+  opacity: 0.7;
+}
+
+.PhoneInputCountrySelectDropdown {
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 9999 !important;
+  background-color: #1f2937 !important;
+  border: 2px solid #E6F802 !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4) !important;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+  margin-top: 0.5rem !important;
+  padding: 0.25rem !important;
+}
+
+.PhoneInputCountryOption {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.75rem !important;
+  color: #e5e7eb !important;
+  padding: 0.75rem 1rem !important;
+  cursor: pointer !important;
+  transition: all 0.2s !important;
+  font-size: 0.875rem !important;
+}
+
+.PhoneInputCountryOption:hover {
+  background-color: #374151 !important;
+}
+
+.PhoneInputCountryOption--selected {
+  background-color: #4b5563 !important;
+  font-weight: 600 !important;
+}
+
+.PhoneInputCountryOption--focused {
+  background-color: #374151 !important;
+}
+
+.PhoneInputCountryOption .PhoneInputCountryIcon {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  overflow: hidden !important;
+}
+
+.PhoneInputCountrySelectDropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.PhoneInputCountrySelectDropdown::-webkit-scrollbar-track {
+  background: #111827;
+  margin: 0.25rem;
+}
+
+.PhoneInputCountrySelectDropdown::-webkit-scrollbar-thumb {
+  background: #4b5563;
+}
+
+.PhoneInputCountrySelectDropdown::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+@media (max-width: 640px) {
+  .phone-input-dark .PhoneInputCountry {
+    padding: 0.625rem;
+  }
+  .phone-input-dark .PhoneInputInput {
+    padding: 0.625rem;
+    font-size: 0.875rem;
+  }
+  .phone-input-dark .PhoneInputCountryIcon {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.375rem;
+  }
+  .phone-input-dark .PhoneInputCountrySelect {
+    font-size: 16px;
+  }
+  .PhoneInputCountrySelectDropdown {
+    max-height: 200px !important;
+  }
+}
+
+body .PhoneInputCountrySelectDropdown {
+  z-index: 99999 !important;
+}
+
+select.PhoneInputCountrySelect {
+  appearance: menulist !important;
+  -webkit-appearance: menulist !important;
+  -moz-appearance: menulist !important;
+}
+
+@-moz-document url-prefix() {
+  .phone-input-dark .PhoneInputCountrySelect option {
+    background-color: #1f2937;
+    color: #e5e7eb;
+  }
+}
+
+/* ================================
+   BOOKING CALENDAR DARK THEME — used by BookingCalendar (react-date-range).
+   The library ships one light theme (white wrapper, dark-gray chrome) with
+   no dark-mode variant, so left alone it renders a white panel with
+   near-invisible nav/weekday text on XOPA's "nuit urbaine" dark background.
+   Same pattern as .phone-input-dark above: scope the override to a wrapper
+   class instead of touching the library's own stylesheet.
+   ================================ */
+.rdr-dark-theme .rdrCalendarWrapper {
+  background: transparent;
+  color: var(--color-gris);
+}
+
+.rdr-dark-theme .rdrMonthAndYearWrapper {
+  background: transparent;
+  padding-top: 0.5rem;
+}
+
+.rdr-dark-theme .rdrMonthAndYearPickers select {
+  color: var(--color-gris);
+  font-weight: 700;
+}
+
+.rdr-dark-theme .rdrMonthAndYearPickers select:hover {
+  background-color: rgba(235, 235, 235, 0.08);
+}
+
+.rdr-dark-theme .rdrNextPrevButton {
+  background: rgba(235, 235, 235, 0.08);
+}
+
+.rdr-dark-theme .rdrNextPrevButton:hover {
+  background: rgba(235, 235, 235, 0.16);
+}
+
+.rdr-dark-theme .rdrPprevButton i {
+  border-color: transparent #ebebeb transparent transparent;
+}
+
+.rdr-dark-theme .rdrNextButton i {
+  border-color: transparent transparent transparent #ebebeb;
+}
+
+.rdr-dark-theme .rdrWeekDay {
+  color: var(--color-gris);
+  opacity: 0.55;
+}
+
+.rdr-dark-theme .rdrMonth {
+  background: transparent;
+  padding: 0 0.833em 1em;
+}
+
+.rdr-dark-theme .rdrMonthName {
+  color: var(--color-gris);
+  opacity: 0.55;
+}
+
+.rdr-dark-theme .rdrDayPassive {
+  opacity: 0.35;
+}
+
+/* Library default is a cramped 3em row (~48px) with cells touching edge to
+   edge — combined with the day pill below that filled the whole cell, the
+   grid read as one fused slab instead of individual days. Taller rows give
+   dayContentRenderer's pill room to sit inset with a visible gap. */
+.rdr-dark-theme .rdrDay {
+  height: 3.6em;
+}
+
+/* dayContentRenderer replaces the number/selection markup entirely, so the
+   only default-theme leftovers on a day cell are its hover/focus outline. */
+.rdr-dark-theme .rdrDay:focus {
+  outline: 1px solid rgba(230, 248, 2, 0.5);
+}
