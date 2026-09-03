@@ -92,8 +92,8 @@ const MotorcyclesTab = () => {
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading motorcycles...</p>
+          <div className="w-12 h-12 border-4 border-jaune border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gris/50">Loading motorcycles...</p>
         </div>
       </div>
     );
@@ -101,10 +101,10 @@ const MotorcyclesTab = () => {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white p-8 rounded-xl shadow-sm border border-gray-200">
+      <div className="bg-[#131316] p-8 rounded-xl border border-white/10">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-bold text-gray-900">Fleet Status</h3>
-          <div className="text-sm text-gray-500">
+          <h3 className="text-xl font-bold text-white">Fleet Status</h3>
+          <div className="text-sm text-white/40">
             Total: {motorcycles.length} | Available: {motorcycles.filter(m => m.is_available).length}
           </div>
         </div>
@@ -115,33 +115,33 @@ const MotorcyclesTab = () => {
               key={motorcycle.id}
               className={`p-6 rounded-xl border-2 transition-all ${
                 motorcycle.is_available
-                  ? 'bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-400'
-                  : 'bg-gradient-to-br from-gray-50 to-gray-100 border-gray-300 opacity-75'
+                  ? 'bg-jaune/[0.06] border-jaune/40'
+                  : 'bg-white/[0.02] border-white/10 opacity-60'
               }`}
             >
               {/* Header row */}
               <div className="flex items-center justify-between mb-4">
-                <Bike size={32} className="text-gray-900" />
+                <Bike size={32} className="text-white" />
                 <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
                   motorcycle.is_available
-                    ? 'bg-green-500 text-white'
-                    : 'bg-red-500 text-white'
+                    ? 'bg-green-500/15 text-green-400'
+                    : 'bg-red-500/15 text-red-400'
                 }`}>
                   {motorcycle.is_available ? 'Available' : 'Unavailable'}
                 </span>
               </div>
 
               {/* Name */}
-              <h4 className="text-lg font-bold text-gray-900 mb-1">
+              <h4 className="text-lg font-bold text-white mb-1">
                 {motorcycle.name || `Motorcycle ${motorcycle.id}`}
               </h4>
-              <p className="text-sm text-gray-600 mb-4">
+              <p className="text-sm text-white/40 mb-4">
                 {motorcycle.is_available ? 'Ready for rental' : 'Out of service'}
               </p>
 
               {/* KM field */}
               <div className="mb-4">
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">Odometer</p>
+                <p className="text-xs font-semibold text-white/30 uppercase tracking-wide mb-1.5">Odometer</p>
                 {editingKm === motorcycle.id ? (
                   <div className="flex items-center gap-1.5">
                     <input
@@ -151,7 +151,7 @@ const MotorcyclesTab = () => {
                       value={kmDraft}
                       onChange={(e) => setKmDraft(e.target.value)}
                       onKeyDown={(e) => handleKmKeyDown(e, motorcycle.id)}
-                      className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:outline-none"
+                      className="w-full px-2 py-1.5 text-sm bg-white/5 border border-white/10 text-white rounded-lg focus:ring-2 focus:ring-jaune focus:outline-none"
                       placeholder="km"
                     />
                     <button
@@ -163,7 +163,7 @@ const MotorcyclesTab = () => {
                     </button>
                     <button
                       onClick={cancelEditKm}
-                      className="p-1.5 bg-gray-200 text-gray-600 rounded-lg hover:bg-gray-300 transition-colors"
+                      className="p-1.5 bg-white/10 text-white/60 rounded-lg hover:bg-white/15 transition-colors"
                     >
                       <X size={14} />
                     </button>
@@ -171,15 +171,15 @@ const MotorcyclesTab = () => {
                 ) : (
                   <button
                     onClick={() => startEditKm(motorcycle)}
-                    className="group flex items-center gap-2 w-full px-3 py-1.5 bg-white/70 hover:bg-white border border-gray-200 hover:border-gray-300 rounded-lg transition-all"
+                    className="group flex items-center gap-2 w-full px-3 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-lg transition-all"
                   >
-                    <span className="text-sm font-semibold text-gray-800 flex-1 text-left">
+                    <span className="text-sm font-semibold text-white/80 flex-1 text-left">
                       {motorcycle.km != null
                         ? `${motorcycle.km.toLocaleString()} km`
-                        : <span className="text-gray-400 font-normal">— set km</span>
+                        : <span className="text-white/30 font-normal">— set km</span>
                       }
                     </span>
-                    <Pencil size={12} className="text-gray-400 group-hover:text-gray-600 transition-colors flex-shrink-0" />
+                    <Pencil size={12} className="text-white/30 group-hover:text-white/60 transition-colors flex-shrink-0" />
                   </button>
                 )}
               </div>
@@ -205,8 +205,8 @@ const MotorcyclesTab = () => {
 
         {motorcycles.length === 0 && (
           <div className="text-center py-12">
-            <Bike size={48} className="text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">No motorcycles found in the system.</p>
+            <Bike size={48} className="text-white/15 mx-auto mb-4" />
+            <p className="text-white/40">No motorcycles found in the system.</p>
           </div>
         )}
       </div>

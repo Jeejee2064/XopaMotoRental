@@ -35,20 +35,20 @@ const BookingLinkGeneratorTab = () => {
   };
 
   return (
-    <div className="max-w-xl mx-auto bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
-      <h2 className="text-2xl font-bold mb-1 text-gray-900">Booking Link Generator</h2>
-      <p className="text-sm text-gray-500 mb-5">Generates a booking page link in the customer's language.</p>
+    <div className="max-w-xl mx-auto bg-[#131316] p-6 rounded-2xl border border-white/10">
+      <h2 className="text-2xl font-bold mb-1 text-white">Booking Link Generator</h2>
+      <p className="text-sm text-white/40 mb-5">Generates a booking page link in the customer's language.</p>
 
       <div className="space-y-5">
 
         {/* Language */}
         <div>
-          <label className="block text-sm font-semibold text-gray-900 mb-2">Language</label>
+          <label className="block text-sm font-semibold text-white mb-2">Language</label>
           <div className="grid grid-cols-3 gap-2">
             {LOCALES.map(l => (
               <button key={l.value} type="button" onClick={() => setLocale(l.value)}
                 className={`p-2.5 rounded-xl border-2 text-center text-sm font-semibold transition-all ${
-                  locale === l.value ? 'border-yellow-400 bg-yellow-50 text-gray-900' : 'border-gray-200 text-gray-600 hover:border-gray-400'
+                  locale === l.value ? 'border-jaune bg-jaune/10 text-jaune' : 'border-white/10 text-white/50 hover:border-white/30'
                 }`}>
                 {l.label}
               </button>
@@ -58,11 +58,11 @@ const BookingLinkGeneratorTab = () => {
 
         {/* Generated Link */}
         {generated && (
-          <div className="p-4 bg-gray-50 border border-gray-200 rounded-xl">
-            <p className="text-sm text-gray-700 break-all mb-3">{generated}</p>
+          <div className="p-4 bg-white/5 border border-white/10 rounded-xl">
+            <p className="text-sm text-white/70 break-all mb-3">{generated}</p>
             <button onClick={copyToClipboard}
-              className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition">
-              {copied ? <><CheckCircle size={18} className="text-green-400" /> Copied!</> : <><Copy size={18} /> Copy Link</>}
+              className="flex items-center gap-2 px-4 py-2 bg-jaune text-noir font-bold rounded-lg hover:brightness-95 transition">
+              {copied ? <><CheckCircle size={18} /> Copied!</> : <><Copy size={18} /> Copy Link</>}
             </button>
           </div>
         )}

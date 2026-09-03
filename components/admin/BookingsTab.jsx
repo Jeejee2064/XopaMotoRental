@@ -43,67 +43,67 @@ const BookingsTab = ({
       <div className="space-y-6">
         <div className="flex gap-4 items-center flex-wrap">
           <div className="flex-1 min-w-[200px] relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/30" size={20} />
             <input
               type="text"
               placeholder="Search bookings..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400"
+              className="w-full pl-10 pr-4 py-2 bg-white/5 border border-white/10 text-white placeholder-white/30 rounded-lg focus:ring-2 focus:ring-jaune focus:border-transparent outline-none"
             />
           </div>
 
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400"
+            className="px-4 py-2 bg-white/5 border border-white/10 text-white rounded-lg focus:ring-2 focus:ring-jaune outline-none"
           >
-            <option value="all">All Status</option>
-            <option value="pending">Pending</option>
-            <option value="confirmed">Confirmed</option>
-            <option value="fully paid">Fully Paid</option>
-            <option value="cancelled">Cancelled</option>
+            <option value="all" className="bg-[#131316]">All Status</option>
+            <option value="pending" className="bg-[#131316]">Pending</option>
+            <option value="confirmed" className="bg-[#131316]">Confirmed</option>
+            <option value="fully paid" className="bg-[#131316]">Fully Paid</option>
+            <option value="cancelled" className="bg-[#131316]">Cancelled</option>
           </select>
 
           <button
             onClick={onAddBooking}
-            className="px-6 py-2 bg-yellow-400 text-gray-900 font-semibold rounded-lg hover:bg-yellow-500 transition-colors flex items-center gap-2"
+            className="px-6 py-2 bg-jaune text-noir font-bold rounded-lg hover:brightness-95 transition-colors flex items-center gap-2"
           >
             <Package size={20} />
             Add Booking
           </button>
         </div>
 
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-[#131316] rounded-xl border border-white/10 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
+              <thead className="bg-white/5 border-b border-white/10">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Customer</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Dates</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Bikes</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Price</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Payment</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Status</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase">Actions</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-white/40 uppercase tracking-wide">Customer</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-white/40 uppercase tracking-wide">Dates</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-white/40 uppercase tracking-wide">Bikes</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-white/40 uppercase tracking-wide">Price</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-white/40 uppercase tracking-wide">Payment</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-white/40 uppercase tracking-wide">Status</th>
+                  <th className="px-6 py-3 text-left text-xs font-semibold text-white/40 uppercase tracking-wide">Actions</th>
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-white/5">
                 {filteredBookings.map(booking => (
-                  <tr key={booking.id} className="hover:bg-gray-50">
+                  <tr key={booking.id} className="hover:bg-white/[0.03]">
 
                     {/* Customer */}
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
-                        <p className="font-semibold text-gray-900">
+                        <p className="font-semibold text-white">
                           {booking.first_name} {booking.last_name}
                         </p>
                         {booking.important_note && (
                           <button
                             onClick={(e) => { e.stopPropagation(); setNoteBooking(booking); }}
                             title="Important note — click to view"
-                            className="flex items-center gap-1 px-2 py-0.5 bg-red-100 text-red-700 border border-red-300 text-xs font-bold rounded-full hover:bg-red-200 transition"
+                            className="flex items-center gap-1 px-2 py-0.5 bg-red-500/15 text-red-400 border border-red-500/30 text-xs font-bold rounded-full hover:bg-red-500/25 transition"
                           >
                             <AlertTriangle size={12} />
                             Important
@@ -112,7 +112,7 @@ const BookingsTab = ({
                       </div>
                       <a
                         href={'mailto:' + booking.email}
-                        className="text-sm text-blue-500 hover:text-blue-700 hover:underline flex items-center gap-1"
+                        className="text-sm text-jaune/80 hover:text-jaune hover:underline flex items-center gap-1"
                         onClick={(e) => e.stopPropagation()}
                       >
                         <Mail size={12} />
@@ -121,17 +121,17 @@ const BookingsTab = ({
                     </td>
 
                     {/* Dates */}
-                    <td className="px-6 py-4 text-sm text-gray-600 whitespace-nowrap">
+                    <td className="px-6 py-4 text-sm text-white/50 whitespace-nowrap">
                       {formatDate(booking.start_date)} → {formatDate(booking.end_date)}
                     </td>
 
                     {/* Bikes */}
-                    <td className="px-6 py-4 text-sm text-gray-600">
+                    <td className="px-6 py-4 text-sm text-white/50">
                       {booking.bike_quantity}
                     </td>
 
                     {/* Price */}
-                    <td className="px-6 py-4 text-sm font-semibold text-gray-900">
+                    <td className="px-6 py-4 text-sm font-semibold text-white">
                       ${parseFloat(booking.total_price).toFixed(0)}
                     </td>
 
@@ -140,9 +140,9 @@ const BookingsTab = ({
                       <span
                         title="Payment status"
                         className={'inline-block px-2 py-0.5 rounded-full text-xs font-semibold ' + (
-                          booking.payment_status === 'paid' ? 'bg-green-100 text-green-700'
-                          : booking.payment_status === 'failed' ? 'bg-red-100 text-red-700'
-                          : 'bg-gray-100 text-gray-500'
+                          booking.payment_status === 'paid' ? 'bg-green-500/15 text-green-400'
+                          : booking.payment_status === 'failed' ? 'bg-red-500/15 text-red-400'
+                          : 'bg-white/10 text-white/50'
                         )}
                       >
                         {booking.payment_status === 'paid' ? 'Paid' : booking.payment_status === 'failed' ? 'Failed' : 'Pending'}
@@ -152,16 +152,16 @@ const BookingsTab = ({
                     {/* Status */}
                     <td className="px-6 py-4">
                       <span className={'px-3 py-1 rounded-full text-xs font-semibold ' + (
-                        booking.status === 'confirmed' ? 'bg-green-100 text-green-700'
-                        : booking.status === 'pending' ? 'bg-yellow-100 text-yellow-700'
-                        : booking.status === 'cancelled' ? 'bg-red-100 text-red-700'
-                        : booking.status === 'fully paid' ? 'bg-blue-100 text-blue-700'
-                        : 'bg-blue-100 text-blue-700'
+                        booking.status === 'fully paid' ? 'bg-green-500/15 text-green-400'
+                        : booking.status === 'confirmed' ? 'bg-white/10 text-white'
+                        : booking.status === 'pending' ? 'bg-jaune/15 text-jaune'
+                        : booking.status === 'cancelled' ? 'bg-red-500/15 text-red-400'
+                        : 'bg-white/10 text-white/60'
                       )}>
                         {booking.status}
                       </span>
                       {booking.assignment_shortage && (
-                        <span className="ml-2 px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700" title="Not enough motorcycles could be assigned automatically — needs manual reassignment">
+                        <span className="ml-2 px-3 py-1 rounded-full text-xs font-semibold bg-red-500/15 text-red-400" title="Not enough motorcycles could be assigned automatically — needs manual reassignment">
                           ⚠ Needs Review
                         </span>
                       )}
@@ -171,7 +171,7 @@ const BookingsTab = ({
                     <td className="px-6 py-4">
                       <button
                         onClick={() => onViewDetails(booking)}
-                        className="text-yellow-600 hover:text-yellow-700 font-semibold text-sm"
+                        className="text-jaune hover:text-jaune/80 font-semibold text-sm"
                       >
                         View
                       </button>
@@ -181,7 +181,7 @@ const BookingsTab = ({
                 ))}
                 {filteredBookings.length === 0 && (
                   <tr>
-                    <td colSpan={7} className="px-6 py-8 text-center text-sm text-gray-400">
+                    <td colSpan={7} className="px-6 py-8 text-center text-sm text-white/30">
                       No bookings match your search.
                     </td>
                   </tr>

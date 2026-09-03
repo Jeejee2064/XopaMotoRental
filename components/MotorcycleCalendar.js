@@ -13,11 +13,13 @@ import {
   isWithinInterval,
 } from 'date-fns';
 
+// Soft, dark-friendly tints — kept as distinct hues (not noir/jaune) because
+// telling motorcycles apart on the timeline is functional, not decorative.
 const MOTORCYCLE_COLORS = [
-  { bg: 'bg-blue-50', border: 'border-blue-200', bar: 'bg-blue-500', text: 'text-blue-800' },
-  { bg: 'bg-green-50', border: 'border-green-200', bar: 'bg-green-500', text: 'text-green-800' },
-  { bg: 'bg-purple-50', border: 'border-purple-200', bar: 'bg-purple-500', text: 'text-purple-800' },
-  { bg: 'bg-orange-50', border: 'border-orange-200', bar: 'bg-orange-500', text: 'text-orange-800' },
+  { bg: 'bg-sky-500/10', border: 'border-sky-500/25', bar: 'bg-sky-500', text: 'text-sky-300' },
+  { bg: 'bg-emerald-500/10', border: 'border-emerald-500/25', bar: 'bg-emerald-500', text: 'text-emerald-300' },
+  { bg: 'bg-violet-500/10', border: 'border-violet-500/25', bar: 'bg-violet-500', text: 'text-violet-300' },
+  { bg: 'bg-orange-500/10', border: 'border-orange-500/25', bar: 'bg-orange-500', text: 'text-orange-300' },
 ];
 
 const LEFT_COLUMN_WIDTH = 200;
@@ -100,7 +102,7 @@ export default function MotorcycleCalendar() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="w-12 h-12 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-jaune border-t-transparent rounded-full animate-spin"></div>
       </div>
     );
   }
@@ -111,7 +113,7 @@ export default function MotorcycleCalendar() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-gray-900">{monthName}</h2>
+        <h2 className="text-2xl font-heading font-black text-white tracking-wide">{monthName}</h2>
         <div className="flex items-center gap-2">
           <select
             value={currentDate.getMonth()}
@@ -120,10 +122,10 @@ export default function MotorcycleCalendar() {
               d.setMonth(parseInt(e.target.value));
               setCurrentDate(d);
             }}
-            className="px-2 py-1.5 border border-gray-200 rounded-lg text-sm font-medium bg-white hover:bg-gray-50 cursor-pointer"
+            className="px-2 py-1.5 bg-white/5 border border-white/10 text-white rounded-lg text-sm font-medium hover:bg-white/10 cursor-pointer outline-none"
           >
             {['January','February','March','April','May','June','July','August','September','October','November','December'].map((m, i) => (
-              <option key={i} value={i}>{m}</option>
+              <option key={i} value={i} className="bg-[#131316]">{m}</option>
             ))}
           </select>
           <select
@@ -133,32 +135,32 @@ export default function MotorcycleCalendar() {
               d.setFullYear(parseInt(e.target.value));
               setCurrentDate(d);
             }}
-            className="px-2 py-1.5 border border-gray-200 rounded-lg text-sm font-medium bg-white hover:bg-gray-50 cursor-pointer"
+            className="px-2 py-1.5 bg-white/5 border border-white/10 text-white rounded-lg text-sm font-medium hover:bg-white/10 cursor-pointer outline-none"
           >
             {Array.from({ length: 6 }, (_, i) => new Date().getFullYear() - 1 + i).map((y) => (
-              <option key={y} value={y}>{y}</option>
+              <option key={y} value={y} className="bg-[#131316]">{y}</option>
             ))}
           </select>
-          <button onClick={prevMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+          <button onClick={prevMonth} className="p-2 hover:bg-white/10 text-white/70 hover:text-white rounded-lg transition-colors">
             <ChevronLeft size={22} />
           </button>
           <button
             onClick={() => setCurrentDate(new Date())}
-            className="px-3 py-1.5 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm font-medium transition-colors"
+            className="px-3 py-1.5 bg-jaune/15 hover:bg-jaune/25 text-jaune rounded-lg text-sm font-semibold transition-colors"
           >
             Today
           </button>
-          <button onClick={nextMonth} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+          <button onClick={nextMonth} className="p-2 hover:bg-white/10 text-white/70 hover:text-white rounded-lg transition-colors">
             <ChevronRight size={22} />
           </button>
         </div>
       </div>
 
       {/* Calendar Grid */}
-      <div ref={containerRef} className="overflow-x-auto border border-gray-200 rounded-lg bg-white shadow-sm">
+      <div ref={containerRef} className="overflow-x-auto border border-white/10 rounded-lg bg-[#131316]">
         <div style={{ display: 'grid', gridTemplateColumns: gridColumns }}>
           {/* Header Row */}
-          <div className="sticky left-0 bg-gray-50 border-r border-b-2 border-gray-300 font-semibold text-sm py-3 px-3 z-20">
+          <div className="sticky left-0 bg-white/5 border-r border-b-2 border-white/10 font-semibold text-sm py-3 px-3 z-20 text-white/70">
             Motorcycle
           </div>
           {daysInMonth.map((d) => {
@@ -166,14 +168,14 @@ export default function MotorcycleCalendar() {
             return (
               <div
                 key={format(d, 'yyyy-MM-dd')}
-                className={`text-center text-xs py-2 border-r border-b-2 border-gray-300 ${
-                  isToday ? 'bg-yellow-50 font-bold' : 'bg-gray-50'
+                className={`text-center text-xs py-2 border-r border-b-2 border-white/10 ${
+                  isToday ? 'bg-jaune/10 font-bold' : 'bg-white/5'
                 }`}
               >
-                <div className={`font-semibold ${isToday ? 'text-yellow-700' : 'text-gray-900'}`}>
+                <div className={`font-semibold ${isToday ? 'text-jaune' : 'text-white/70'}`}>
                   {format(d, 'd')}
                 </div>
-                <div className={`text-[10px] ${isToday ? 'text-yellow-600' : 'text-gray-500'}`}>
+                <div className={`text-[10px] ${isToday ? 'text-jaune/70' : 'text-white/35'}`}>
                   {format(d, 'EEE')}
                 </div>
               </div>
@@ -202,7 +204,7 @@ export default function MotorcycleCalendar() {
                 <div className="relative col-span-full flex">
                   {/* Left Column */}
                   <div
-                    className={`sticky left-0 ${color.bg} ${color.border} border-r border-b px-3 py-3 font-medium text-gray-800 z-10 flex items-center`}
+                    className={`sticky left-0 ${color.bg} ${color.border} border-r border-b px-3 py-3 font-medium text-white/85 z-10 flex items-center`}
                     style={{ width: LEFT_COLUMN_WIDTH }}
                   >
                     {bike.name}
@@ -212,7 +214,7 @@ export default function MotorcycleCalendar() {
                   {daysInMonth.map((day) => (
                     <div
                       key={format(day, 'yyyy-MM-dd')}
-                      className="h-14 border-b border-r border-gray-100"
+                      className="h-14 border-b border-r border-white/5"
                       style={{ width: cellWidth }}
                     />
                   ))}
@@ -266,9 +268,9 @@ export default function MotorcycleCalendar() {
       </div>
 
       {/* Legend */}
-      <div className="flex items-center gap-6 text-sm text-gray-600">
+      <div className="flex items-center gap-6 text-sm text-white/50 flex-wrap">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 bg-yellow-50 border border-yellow-300 rounded"></div>
+          <div className="w-3 h-3 bg-jaune/15 border border-jaune/40 rounded"></div>
           <span>Today</span>
         </div>
         {motorcycles.map((bike) => {
@@ -284,63 +286,63 @@ export default function MotorcycleCalendar() {
 
       {/* Booking Modal */}
       {selectedBooking && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white p-6 rounded-xl shadow-2xl w-full max-w-md relative">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
+          <div className="bg-[#141417] border border-white/10 p-6 rounded-xl shadow-2xl w-full max-w-md relative">
             <button
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-900 transition-colors"
+              className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors"
               onClick={() => setSelectedBooking(null)}
             >
               <X size={20} />
             </button>
-            <h3 className="text-xl font-bold mb-4 text-gray-900 border-b pb-3">
+            <h3 className="text-xl font-bold mb-4 text-white border-b border-white/10 pb-3">
               Booking Details
             </h3>
             <div className="space-y-3 text-sm">
               <div>
-                <span className="font-semibold text-gray-600">Rider:</span>{' '}
-                <span className="font-medium text-gray-900">{selectedBooking.display_name || selectedBooking.customer_name}</span>
+                <span className="font-semibold text-white/40">Rider:</span>{' '}
+                <span className="font-medium text-white">{selectedBooking.display_name || selectedBooking.customer_name}</span>
               </div>
               <div>
-                <span className="font-semibold text-gray-600">Motorcycle:</span>{' '}
-                <span className="font-medium text-gray-900">{selectedBooking.motorcycle_name}</span>
+                <span className="font-semibold text-white/40">Motorcycle:</span>{' '}
+                <span className="font-medium text-white">{selectedBooking.motorcycle_name}</span>
               </div>
               <div>
-                <span className="font-semibold text-gray-600">Period:</span>{' '}
-                <span className="font-medium text-gray-900">
+                <span className="font-semibold text-white/40">Period:</span>{' '}
+                <span className="font-medium text-white">
                   {format(parseLocalDate(selectedBooking.start_date), 'MMM d, yyyy')} –{' '}
                   {format(parseLocalDate(selectedBooking.end_date), 'MMM d, yyyy')}
                 </span>
               </div>
               <div>
-                <span className="font-semibold text-gray-600">Duration:</span>{' '}
-                <span className="font-medium text-gray-900">
+                <span className="font-semibold text-white/40">Duration:</span>{' '}
+                <span className="font-medium text-white">
                   {selectedBooking.duration_days || '-'} days
                 </span>
               </div>
               <div>
-                <span className="font-semibold text-gray-600">Phone:</span>{' '}
+                <span className="font-semibold text-white/40">Phone:</span>{' '}
                 <a
                   href={`https://wa.me/${(selectedBooking.phone || '').replace(/\D/g, '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-green-600 hover:underline"
+                  className="text-green-400 hover:underline"
                 >
                   {selectedBooking.phone || '—'}
                 </a>
               </div>
               <div>
-                <span className="font-semibold text-gray-600">Email:</span>{' '}
-                <a href={`mailto:${selectedBooking.display_email}`} className="text-blue-600 hover:underline">
+                <span className="font-semibold text-white/40">Email:</span>{' '}
+                <a href={`mailto:${selectedBooking.display_email}`} className="text-jaune hover:underline">
                   {selectedBooking.display_email}
                 </a>
               </div>
               <div>
-                <span className="font-semibold text-gray-600">Status:</span>{' '}
+                <span className="font-semibold text-white/40">Status:</span>{' '}
                 <span
                   className={`inline-block px-2 py-1 rounded text-xs font-semibold ${
                     selectedBooking.status === 'confirmed' || selectedBooking.status === 'fully paid'
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-gray-100 text-gray-800'
+                      ? 'bg-green-500/15 text-green-400'
+                      : 'bg-white/10 text-white/60'
                   }`}
                 >
                   {selectedBooking.status}
@@ -350,7 +352,7 @@ export default function MotorcycleCalendar() {
                 <div>
                   <button
                     onClick={() => setNoteBooking(selectedBooking)}
-                    className="flex items-center gap-1 px-2 py-1 bg-red-100 text-red-700 border border-red-300 text-xs font-bold rounded-full hover:bg-red-200 transition"
+                    className="flex items-center gap-1 px-2 py-1 bg-red-500/15 text-red-400 border border-red-500/30 text-xs font-bold rounded-full hover:bg-red-500/25 transition"
                   >
                     <AlertTriangle size={12} />
                     Important — click to view note
@@ -360,12 +362,12 @@ export default function MotorcycleCalendar() {
             </div>
 
             {/* View Details button */}
-            <div className="mt-5 pt-4 border-t border-gray-100">
+            <div className="mt-5 pt-4 border-t border-white/10">
               <a
                 href={`/admin/ok/bookings/${selectedBooking.id ?? selectedBooking.booking_id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold rounded-lg transition-colors text-sm"
+                className="flex items-center justify-center gap-2 w-full px-4 py-2.5 bg-jaune hover:brightness-95 text-noir font-bold rounded-lg transition-colors text-sm"
               >
                 <ExternalLink size={16} />
                 View Full Details

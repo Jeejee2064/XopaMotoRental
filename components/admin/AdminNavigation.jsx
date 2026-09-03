@@ -17,7 +17,7 @@ const AdminNavigation = ({ activeTab, setActiveTab, stats = {} }) => {
   ];
 
   return (
-    <div className="bg-white border-b border-gray-200">
+    <div className="bg-noir border-b border-white/10">
       <div className="max-w-7xl mx-auto px-4">
         {/* allow horizontal scroll on small screens */}
         <nav className="flex gap-8 overflow-x-auto no-scrollbar py-2">
@@ -27,18 +27,18 @@ const AdminNavigation = ({ activeTab, setActiveTab, stats = {} }) => {
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center gap-2 py-4 px-2 border-b-2 transition-colors whitespace-nowrap ${
                 activeTab === tab.id
-                  ? 'border-yellow-400 text-gray-900'
-                  : 'border-transparent text-gray-500 hover:text-gray-900'
+                  ? 'border-jaune text-jaune'
+                  : 'border-transparent text-gris/50 hover:text-white'
               }`}
             >
               <tab.icon size={20} />
 
-              <span className="font-semibold">{tab.label}</span>
+              <span className="font-heading uppercase tracking-wide font-bold text-sm">{tab.label}</span>
 
               {tab.badge > 0 && (
                 <span
-                  className={`ml-2 text-white text-xs px-2 py-0.5 rounded-full ${
-                    tab.id === 'messages' ? 'bg-red-500' : 'bg-yellow-500'
+                  className={`ml-1 text-[11px] font-bold px-2 py-0.5 rounded-full ${
+                    tab.id === 'messages' ? 'bg-red-500 text-white' : 'bg-jaune text-noir'
                   }`}
                 >
                   {tab.badge}

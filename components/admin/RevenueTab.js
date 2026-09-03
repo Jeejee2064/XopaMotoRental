@@ -5,6 +5,8 @@ import React, { useMemo, useState, useRef, useEffect } from 'react';
 const MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const MONTHS_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
+const JAUNE = '#E6F802';
+
 const fmt = (n) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
 
@@ -40,7 +42,7 @@ function MonthBarChart({ paidRevs, pendingRevs, activeMonth, onMonthClick }) {
               label: 'Fully paid',
               data: paidRevs,
               backgroundColor: MONTHS_SHORT.map((_, i) =>
-                i === activeMonth ? '#FACC15' : 'rgba(250,204,21,0.55)'
+                i === activeMonth ? JAUNE : 'rgba(230,248,2,0.4)'
               ),
               borderRadius: { topLeft: 0, topRight: 0, bottomLeft: 4, bottomRight: 4 },
               borderSkipped: 'bottom',
@@ -50,7 +52,7 @@ function MonthBarChart({ paidRevs, pendingRevs, activeMonth, onMonthClick }) {
               label: 'To be paid',
               data: pendingRevs,
               backgroundColor: MONTHS_SHORT.map((_, i) =>
-                i === activeMonth ? 'rgba(156,163,175,0.6)' : 'rgba(156,163,175,0.3)'
+                i === activeMonth ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.14)'
               ),
               borderRadius: { topLeft: 4, topRight: 4, bottomLeft: 0, bottomRight: 0 },
               borderSkipped: 'top',
@@ -64,6 +66,11 @@ function MonthBarChart({ paidRevs, pendingRevs, activeMonth, onMonthClick }) {
           plugins: {
             legend: { display: false },
             tooltip: {
+              backgroundColor: '#1a1a1e',
+              borderColor: 'rgba(255,255,255,0.1)',
+              borderWidth: 1,
+              titleColor: '#fff',
+              bodyColor: '#e6e6e6',
               callbacks: {
                 label: (c) => ' ' + c.dataset.label + ': ' + fmt(c.parsed.y),
               },
@@ -72,7 +79,7 @@ function MonthBarChart({ paidRevs, pendingRevs, activeMonth, onMonthClick }) {
           scales: {
             x: {
               grid: { display: false },
-              ticks: { autoSkip: false, font: { size: 11 } },
+              ticks: { autoSkip: false, font: { size: 11 }, color: 'rgba(255,255,255,0.45)' },
               stacked: true,
             },
             y: {
@@ -80,12 +87,13 @@ function MonthBarChart({ paidRevs, pendingRevs, activeMonth, onMonthClick }) {
               stacked: true,
               ticks: {
                 font: { size: 11 },
+                color: 'rgba(255,255,255,0.35)',
                 callback: (v) =>
                   v >= 1000
                     ? '$' + (v / 1000).toFixed(v % 1000 === 0 ? 0 : 1) + 'k'
                     : '$' + v,
               },
-              grid: { color: 'rgba(136,135,128,0.12)' },
+              grid: { color: 'rgba(255,255,255,0.06)' },
             },
           },
           onClick: (_, elements) => {
@@ -110,27 +118,27 @@ function MonthBarChart({ paidRevs, pendingRevs, activeMonth, onMonthClick }) {
 function StatusBadge({ booking }) {
   if (isPaid(booking)) {
     return (
-      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700">
+      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-500/15 text-green-400">
         Paid
       </span>
     );
   }
   if (booking.status === 'confirmed') {
     return (
-      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
+      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-white/10 text-white/70">
         Confirmed
       </span>
     );
   }
   if (booking.status === 'pending') {
     return (
-      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-orange-100 text-orange-700">
+      <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-jaune/15 text-jaune">
         Pending
       </span>
     );
   }
   return (
-    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">
+    <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-white/10 text-white/40">
       {booking.status}
     </span>
   );
@@ -217,9 +225,9 @@ const RevenueTab = ({ bookings = [] }) => {
   };
 
   const navBtn = {
-    background: '#f3f4f6', border: '1px solid #e5e7eb', borderRadius: '8px',
+    background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px',
     width: '32px', height: '32px', cursor: 'pointer', fontSize: '15px',
-    color: '#6b7280', display: 'flex', alignItems: 'center', justifyContent: 'center',
+    color: '#e6e6e6', display: 'flex', alignItems: 'center', justifyContent: 'center',
   };
 
   return (
@@ -228,14 +236,14 @@ const RevenueTab = ({ bookings = [] }) => {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="text-2xl font-black text-gray-900 tracking-tight">Revenue</h2>
-          <p className="text-xs text-gray-400 mt-0.5">
-            Earnings = <span className="font-semibold text-gray-500">fully paid</span> only · confirmed bookings shown as pipeline
+          <h2 className="text-2xl font-heading font-black text-white tracking-wide">Revenue</h2>
+          <p className="text-xs text-white/35 mt-0.5">
+            Earnings = <span className="font-semibold text-white/55">fully paid</span> only · confirmed bookings shown as pipeline
           </p>
         </div>
-        <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-3 py-2 shadow-sm">
+        <div className="flex items-center gap-2 bg-[#131316] border border-white/10 rounded-xl px-3 py-2">
           <button onClick={prevMonth} style={navBtn}>←</button>
-          <span className="text-sm font-semibold text-gray-800 min-w-[140px] text-center">
+          <span className="text-sm font-semibold text-white min-w-[140px] text-center">
             {MONTHS_LONG[curMonth]} {curYear}
           </span>
           <button onClick={nextMonth} style={navBtn}>→</button>
@@ -244,52 +252,52 @@ const RevenueTab = ({ bookings = [] }) => {
 
       {/* KPI cards */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-xl p-4 bg-yellow-400">
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-yellow-800">Earned this month</p>
-          <p className="text-3xl font-black text-yellow-900 leading-none mt-1">{fmt(monthRev)}</p>
+        <div className="rounded-xl p-4 bg-jaune">
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-noir/60">Earned this month</p>
+          <p className="text-3xl font-heading font-black text-noir leading-none mt-1">{fmt(monthRev)}</p>
           {delta !== null && (
-            <p className="text-[11px] font-semibold mt-1 text-yellow-800">
+            <p className="text-[11px] font-semibold mt-1 text-noir/70">
               {delta >= 0 ? '▲' : '▼'} {Math.abs(delta).toFixed(1)}% vs last month
             </p>
           )}
         </div>
 
-        <div className="rounded-xl p-4 bg-white border border-gray-100 shadow-sm">
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400">Pipeline this month</p>
-          <p className="text-3xl font-black text-gray-900 leading-none mt-1">{fmt(monthPendRev)}</p>
-          <p className="text-[11px] text-gray-400 mt-1">{monthPending.length} booking{monthPending.length !== 1 ? 's' : ''} to be paid</p>
+        <div className="rounded-xl p-4 bg-[#131316] border border-white/10">
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-white/35">Pipeline this month</p>
+          <p className="text-3xl font-heading font-black text-white leading-none mt-1">{fmt(monthPendRev)}</p>
+          <p className="text-[11px] text-white/35 mt-1">{monthPending.length} booking{monthPending.length !== 1 ? 's' : ''} to be paid</p>
         </div>
 
-        <div className="rounded-xl p-4 bg-white border border-gray-100 shadow-sm">
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400">Avg per booking</p>
-          <p className="text-3xl font-black text-gray-900 leading-none mt-1">{avg !== null ? fmt(avg) : '—'}</p>
-          <p className="text-[11px] text-gray-400 mt-1">{prevPaid.length > 0 ? `${prevPaid.length} paid last month` : 'no data last month'}</p>
+        <div className="rounded-xl p-4 bg-[#131316] border border-white/10">
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-white/35">Avg per booking</p>
+          <p className="text-3xl font-heading font-black text-white leading-none mt-1">{avg !== null ? fmt(avg) : '—'}</p>
+          <p className="text-[11px] text-white/35 mt-1">{prevPaid.length > 0 ? `${prevPaid.length} paid last month` : 'no data last month'}</p>
         </div>
       </div>
 
       {/* Chart */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+      <div className="bg-[#131316] rounded-2xl border border-white/10 p-5">
         <div className="flex items-center justify-between mb-1">
-          <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400">
+          <p className="text-[11px] font-semibold uppercase tracking-widest text-white/35">
             Monthly revenue — click a bar to switch month
           </p>
           <select
             value={curYear}
             onChange={e => setCurYear(Number(e.target.value))}
-            className="text-xs font-semibold text-gray-700 border border-gray-200 rounded-lg px-2 py-1 bg-gray-50 cursor-pointer outline-none"
+            className="text-xs font-semibold text-white border border-white/10 rounded-lg px-2 py-1 bg-white/5 cursor-pointer outline-none"
           >
-            {years.map(y => <option key={y} value={y}>{y}</option>)}
+            {years.map(y => <option key={y} value={y} className="bg-[#131316]">{y}</option>)}
           </select>
         </div>
         {/* Legend */}
         <div className="flex items-center gap-5 mb-4">
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm" style={{ background: '#FACC15' }} />
-            <span className="text-[11px] text-gray-500">Fully paid</span>
+            <div className="w-3 h-3 rounded-sm" style={{ background: JAUNE }} />
+            <span className="text-[11px] text-white/45">Fully paid</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm" style={{ background: 'rgba(156,163,175,0.55)' }} />
-            <span className="text-[11px] text-gray-500">To be paid</span>
+            <div className="w-3 h-3 rounded-sm" style={{ background: 'rgba(255,255,255,0.3)' }} />
+            <span className="text-[11px] text-white/45">To be paid</span>
           </div>
         </div>
         <MonthBarChart
@@ -301,25 +309,25 @@ const RevenueTab = ({ bookings = [] }) => {
       </div>
 
       {/* All bookings this month */}
-      <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
-        <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-4">
+      <div className="bg-[#131316] rounded-2xl border border-white/10 p-5">
+        <p className="text-[11px] font-semibold uppercase tracking-widest text-white/35 mb-4">
           All bookings this month
         </p>
         {monthAll.length === 0 ? (
-          <p className="text-sm text-gray-400 py-4 text-center">No bookings this month.</p>
+          <p className="text-sm text-white/30 py-4 text-center">No bookings this month.</p>
         ) : (
-          <div className="divide-y divide-gray-50">
+          <div className="divide-y divide-white/5">
             {monthAll.map(b => (
               <div key={b.id} className="flex items-center justify-between py-2.5 gap-2">
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold text-gray-900 truncate">{b.first_name} {b.last_name}</p>
-                  <p className="text-[11px] text-gray-400">
+                  <p className="text-sm font-semibold text-white truncate">{b.first_name} {b.last_name}</p>
+                  <p className="text-[11px] text-white/35">
                     {b.start_date} → {b.end_date} · {getDays(b.start_date, b.end_date)}d
                   </p>
                 </div>
                 <div className="flex items-center gap-1.5 flex-shrink-0">
                   <StatusBadge booking={b} />
-                  <span className={`text-sm font-bold tabular-nums ${isPaid(b) ? 'text-gray-900' : 'text-gray-400'}`}>
+                  <span className={`text-sm font-bold tabular-nums ${isPaid(b) ? 'text-white' : 'text-white/30'}`}>
                     {fmt(parseFloat(b.total_price))}
                   </span>
                 </div>
@@ -330,30 +338,30 @@ const RevenueTab = ({ bookings = [] }) => {
       </div>
 
       {/* All-time section */}
-      <div className="border-t border-gray-200 pt-6">
-        <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-4">All time</p>
+      <div className="border-t border-white/10 pt-6">
+        <p className="text-[11px] font-semibold uppercase tracking-widest text-white/35 mb-4">All time</p>
 
         <div className="grid grid-cols-3 gap-3">
-          <div className="rounded-xl p-4 bg-gray-900">
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400">Total revenue</p>
-            <p className="text-3xl font-black text-yellow-400 leading-none mt-1">{fmt(allTimeRev)}</p>
-            <p className="text-[11px] text-gray-500 mt-1">{paidBookings.length} paid bookings</p>
+          <div className="rounded-xl p-4 bg-noir border border-jaune/20">
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-white/35">Total revenue</p>
+            <p className="text-3xl font-heading font-black text-jaune leading-none mt-1">{fmt(allTimeRev)}</p>
+            <p className="text-[11px] text-white/35 mt-1">{paidBookings.length} paid bookings</p>
           </div>
 
-          <div className="rounded-xl p-4 bg-white border border-gray-100 shadow-sm">
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400">Avg per booking</p>
-            <p className="text-3xl font-black text-gray-900 leading-none mt-1">
+          <div className="rounded-xl p-4 bg-[#131316] border border-white/10">
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-white/35">Avg per booking</p>
+            <p className="text-3xl font-heading font-black text-white leading-none mt-1">
               {paidBookings.length > 0 ? fmt(allTimeAvg) : '—'}
             </p>
-            <p className="text-[11px] text-gray-400 mt-1">across all paid bookings</p>
+            <p className="text-[11px] text-white/35 mt-1">across all paid bookings</p>
           </div>
 
-          <div className="rounded-xl p-4 bg-white border border-gray-100 shadow-sm">
-            <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400">Best month</p>
-            <p className="text-3xl font-black text-gray-900 leading-none mt-1">
+          <div className="rounded-xl p-4 bg-[#131316] border border-white/10">
+            <p className="text-[11px] font-semibold uppercase tracking-widest text-white/35">Best month</p>
+            <p className="text-3xl font-heading font-black text-white leading-none mt-1">
               {bestMonthEntry ? fmt(bestMonthEntry[1]) : '—'}
             </p>
-            <p className="text-[11px] text-gray-400 mt-1">{bestMonthEntry ? bestMonthEntry[0] : 'no data yet'}</p>
+            <p className="text-[11px] text-white/35 mt-1">{bestMonthEntry ? bestMonthEntry[0] : 'no data yet'}</p>
           </div>
         </div>
       </div>

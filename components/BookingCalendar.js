@@ -63,29 +63,43 @@ export default function BookingCalendar({ onDateRangeChange }) {
   };
 
   const customDayContent = (day) => {
-    // One flat gray tile for every non-selected day, full-strength gris
-    // text on top — the logo's cyan (+ black text) is the only accent,
-    // reserved for the selected range so it's the one thing that pops.
-    // (Earlier this shaded each availability tier a different gray: as the
-    // tile got lighter to signal "less available", the same light text lost
-    // contrast against it — the fix isn't a different gray, it's not
-    // varying the tile's lightness against fixed-lightness text at all.)
+    // Availability tiers reuse Overland's exact colors (green/yellow/orange/red on
+    // dark text, white text on red) — a flat gray tile with just an opacity ramp
+    // (8%/16%/26%/36% white) read as one indistinguishable dark blob, especially
+    // for "only 1 left" / "fully booked". Selected stays Xopa's cyan since that's
+    // already the one accent that pops against the dark theme.
     // react-date-range's own stylesheet ships `.rdrDayNumber span { color: #1d2429 }`,
     // which beats a plain Tailwind class on specificity and blanks the digits on our
     // dark background — the `!` important-modifier is what actually wins that fight.
+    const y = day.getFullYear();
+    const m = String(day.getMonth() + 1).padStart(2, '0');
+    const d = String(day.getDate()).padStart(2, '0');
+    const key = `${y}-${m}-${d}`;
+
+    const booked = availabilityMap[key] || 0;
+    const remaining = maxBikes - booked;
+
     let bgColor, textColor;
     if (isSelected(day)) {
       bgColor = 'bg-cyan';
       textColor = '!text-noir font-bold';
+    } else if (remaining === maxBikes) {
+      bgColor = 'bg-green-200';
+      textColor = '!text-gray-900';
+    } else if (remaining >= 2) {
+      bgColor = 'bg-yellow-200';
+      textColor = '!text-gray-900';
+    } else if (remaining === 1) {
+      bgColor = 'bg-orange-300';
+      textColor = '!text-gray-900';
     } else {
-      bgColor = 'bg-white/10';
-      textColor = '!text-gris';
+      bgColor = 'bg-red-400';
+      textColor = '!text-white';
     }
-    const border = isSelected(day) ? '' : 'border border-white/10';
 
     return (
       <div className="relative w-full h-full flex flex-col items-center justify-center p-[3px] md:p-1">
-        <div className={`absolute inset-[3px] md:inset-1 rounded-md pointer-events-none ${bgColor} ${border}`} />
+        <div className={`absolute inset-[3px] md:inset-1 rounded-md pointer-events-none ${bgColor}`} />
         <span className={`relative z-10 ${isMobile ? 'text-xs' : 'text-sm'} font-semibold ${textColor}`}>{day.getDate()}</span>
       </div>
     );
@@ -126,10 +140,10 @@ export default function BookingCalendar({ onDateRangeChange }) {
         <div className="bg-noir border-t border-gris/20 px-3 md:px-4 py-3">
           <div className="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-2">
             <LegendItem color="bg-cyan" label={t('selectedPeriod')} />
-            <LegendItem color="bg-white/[0.08]" label={t('allAvailable')} />
-            <LegendItem color="bg-white/[0.16]" label={t('twoThreeLeft')} />
-            <LegendItem color="bg-white/[0.26]" label={t('oneLeft')} />
-            <LegendItem color="bg-white/[0.36]" label={t('fullyBooked')} />
+            <LegendItem color="bg-green-200" label={t('allAvailable')} />
+            <LegendItem color="bg-yellow-200" label={t('twoThreeLeft')} />
+            <LegendItem color="bg-orange-300" label={t('oneLeft')} />
+            <LegendItem color="bg-red-400" label={t('fullyBooked')} />
           </div>
         </div>
       </div>

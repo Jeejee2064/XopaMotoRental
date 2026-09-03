@@ -278,17 +278,17 @@ const AdminDashboardClient = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-noir flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-gray-600">Loading dashboard...</p>
+          <div className="w-16 h-16 border-4 border-jaune border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gris/50">Loading dashboard...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-noir">
       <AdminHeader onRefresh={loadData} onLogout={handleLogout} />
       <AdminNavigation activeTab={activeTab} setActiveTab={setActiveTab} stats={stats} />
 
@@ -347,8 +347,8 @@ const AdminDashboardClient = () => {
 
       {/* Toast */}
       {toast && (
-        <div className={`fixed bottom-6 right-6 z-[200] flex items-center gap-3 px-5 py-3.5 rounded-xl shadow-2xl text-white text-sm font-semibold transition-all ${
-          toast.type === 'error' ? 'bg-red-500' : 'bg-green-500'
+        <div className={`fixed bottom-6 right-6 z-[200] flex items-center gap-3 px-5 py-3.5 rounded-xl shadow-2xl text-sm font-semibold transition-all border ${
+          toast.type === 'error' ? 'bg-red-500/95 border-red-400/30 text-white' : 'bg-jaune border-jaune text-noir'
         }`}>
           {toast.type === 'error' ? '❌' : '✅'} {toast.msg}
         </div>
@@ -356,9 +356,9 @@ const AdminDashboardClient = () => {
 
       {/* Confirm Modal */}
       {confirmModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[200] p-4">
-          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-2xl">
-            <p className="text-gray-800 font-semibold mb-6 text-center">{confirmModal.msg}</p>
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[200] p-4">
+          <div className="bg-[#141417] border border-white/10 rounded-2xl p-6 max-w-sm w-full shadow-2xl">
+            <p className="text-white font-semibold mb-6 text-center">{confirmModal.msg}</p>
             <div className="flex gap-3">
               <button
                 onClick={async () => { const fn = confirmModal.onConfirm; setConfirmModal(null); await fn(); }}
@@ -368,7 +368,7 @@ const AdminDashboardClient = () => {
               </button>
               <button
                 onClick={() => setConfirmModal(null)}
-                className="flex-1 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold rounded-xl transition"
+                className="flex-1 py-2.5 bg-white/10 hover:bg-white/15 text-white font-bold rounded-xl transition"
               >
                 Cancel
               </button>
