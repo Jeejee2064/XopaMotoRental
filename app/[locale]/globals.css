@@ -340,3 +340,11 @@ select.PhoneInputCountrySelect {
 .rdr-dark-theme .rdrDay:focus {
   outline: 1px solid rgba(230, 248, 2, 0.5);
 }
+
+/* Default theme paints disabled days (past dates, before minDate) with a
+   near-white rgb(248,248,248) fill meant for a light wrapper — on our dark
+   background it fuses adjacent disabled cells into one glaring white slab.
+   Gray it into the same "muted" register as .rdrDayPassive instead. */
+.rdr-dark-theme .rdrDayDisabled {
+  background-color: rgba(235, 235, 235, 0.04);
+}
