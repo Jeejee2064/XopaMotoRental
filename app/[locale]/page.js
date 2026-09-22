@@ -27,6 +27,14 @@ export default function HomePage() {
     { title: t('step3Title'), desc: t('step3Desc') }
   ];
 
+  const galleryImages = [
+    { src: '/gallery/casco-viejo-1.jpeg', alt: 'SPI RX250 de XOPA Moto Rental circulando por una calle empedrada de Casco Viejo, Panama City' },
+    { src: '/gallery/casco-viejo-2.jpeg', alt: 'Motociclista con la SPI RX250 de XOPA Moto Rental frente a los balcones coloniales de Casco Viejo' },
+    { src: '/gallery/casco-viejo-3.jpeg', alt: 'SPI RX250 de alquiler estacionada junto a un edificio colonial en Casco Viejo, Panama City' },
+    { src: '/gallery/casco-viejo-4.jpeg', alt: 'Detalle de la SPI RX250 de XOPA Moto Rental con maletas laterales, en Casco Viejo' },
+    { src: '/gallery/casco-viejo-5.jpeg', alt: 'Recorriendo Casco Viejo en moto con XOPA Moto Rental, calle adoquinada y arquitectura colonial' }
+  ];
+
   return (
     <div className="min-h-screen bg-noir">
       <Navigation />
@@ -93,6 +101,29 @@ export default function HomePage() {
           <Reveal delay={0.15} className="aspect-square relative overflow-hidden">
             <Image src="/RX250_2.jpeg" alt="SPI RX250 — XOPA Moto Rental" fill className="object-cover" />
           </Reveal>
+        </div>
+      </section>
+
+      {/* Gallery */}
+      <section className="py-20 px-4 bg-noir">
+        <div className="max-w-6xl mx-auto">
+          <Reveal className="text-center mb-14">
+            <h2 className="text-4xl md:text-5xl font-heading font-black text-jaune mb-4">{t('galleryTitle')}</h2>
+            <p className="text-lg text-gris">{t('galleryDesc')}</p>
+          </Reveal>
+          <Stagger className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            {galleryImages.map(({ src, alt }) => (
+              <StaggerItem key={src} className="relative aspect-[3/4] overflow-hidden group">
+                <Image
+                  src={src}
+                  alt={alt}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  sizes="(min-width: 1024px) 20vw, (min-width: 640px) 33vw, 50vw"
+                />
+              </StaggerItem>
+            ))}
+          </Stagger>
         </div>
       </section>
 

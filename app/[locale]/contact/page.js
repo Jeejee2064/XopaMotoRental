@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import { MessageCircle, MapPin, Mail, Phone, Clock, Facebook, Instagram } from 'lucide-react';
+import { MessageCircle, MapPin, Mail, Phone, Clock } from 'lucide-react';
 
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
@@ -84,28 +84,6 @@ export default function ContactPage() {
               </a>
             </StaggerItem>
           </Stagger>
-
-          <Reveal className="mt-10 text-center">
-            <h2 className="text-gris/60 font-heading font-bold uppercase tracking-wide text-sm mb-4">{t('socialTitle')}</h2>
-            <div className="flex justify-center gap-4">
-              <a
-                href={siteConfig.social.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-11 h-11 border border-gris/30 rounded-full flex items-center justify-center text-gris hover:text-cyan transition-colors duration-200"
-              >
-                <Facebook size={18} />
-              </a>
-              <a
-                href={siteConfig.social.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-11 h-11 border border-gris/30 rounded-full flex items-center justify-center text-gris hover:text-jaune transition-colors duration-200"
-              >
-                <Instagram size={18} />
-              </a>
-            </div>
-          </Reveal>
         </div>
       </section>
 

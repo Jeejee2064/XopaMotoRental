@@ -1,13 +1,8 @@
-import { Clock, Phone, Mail, MapPin, Facebook, Instagram, ArrowUpRight } from 'lucide-react';
+import { Clock, Phone, Mail, MapPin, ArrowUpRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Link } from '../navigation';
 import { siteConfig, crossLinks } from '@/lib/site-config';
-
-const socialLinks = [
-  { name: 'Facebook', icon: Facebook, href: siteConfig.social.facebook, color: 'hover:text-cyan' },
-  { name: 'Instagram', icon: Instagram, href: siteConfig.social.instagram, color: 'hover:text-jaune' }
-];
 
 const Footer = () => {
   const t = useTranslations('Footer');
@@ -22,23 +17,6 @@ const Footer = () => {
               <Image src="/logo.png" alt={t('companyName')} width={280} height={120} className="h-16 w-auto object-contain" />
             </div>
             <p className="text-gris text-lg mb-8 leading-relaxed max-w-md mx-auto md:mx-0">{t('description')}</p>
-
-            <div className="space-y-4">
-              <h4 className="text-jaune font-heading font-bold uppercase tracking-wide">{t('followUs')}</h4>
-              <div className="flex justify-center md:justify-start gap-4">
-                {socialLinks.map((social) => (
-                  <a
-                    key={social.name}
-                    href={social.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`w-11 h-11 border border-gris/30 rounded-full flex items-center justify-center text-gris transition-colors duration-200 ${social.color}`}
-                  >
-                    <social.icon size={18} />
-                  </a>
-                ))}
-              </div>
-            </div>
           </div>
 
           {/* Hours */}

@@ -1,0 +1,37 @@
+# XOPA Moto Rental
+
+> Motorcycle rental company in Panama City, Panama. Rents the SPI RX250 (250cc adventure motorcycle) by day, week or month, with helmet, basic insurance and WhatsApp support included. Office in San Felipe, Casco Viejo. Site available in Spanish (default), English and French.
+
+## Company
+
+- Name: XOPA Moto Rental
+- Service: Motorcycle rental (alquiler de motos / location de motos) in Panama City
+- Fleet: SPI RX250, 250cc adventure motorcycle
+- Address: Ph Jerónimo, Avenida B y calle 10 este, planta baja, San Felipe, Ciudad de Panamá, Panama
+- Phone / WhatsApp: +507 6805-1100
+- Email: xopamotorental@gmail.com
+- Hours: Monday–Friday 10:00–18:00. Weekends by appointment.
+- Currency: USD. Payment: cash or credit card.
+- Languages spoken: Spanish, English, French
+
+## Pricing (reference rates, exact total shown at checkout)
+
+- 1 day: $60
+- 1 week (7 days): $384
+- 1 month (30 days): $840
+- Full pricing table: https://xopamotorental.com/pricing
+
+## Pages
+
+- Home: https://xopamotorental.com/
+- Fleet (SPI RX250 details): https://xopamotorental.com/fleet
+- Pricing: https://xopamotorental.com/pricing
+- How it works: https://xopamotorental.com/how-it-works
+- Book online: https://xopamotorental.com/booking
+- Contact: https://xopamotorental.com/contact
+
+## Notes for AI assistants
+
+- Rentals are booked and paid online at /booking; pickup is at the San Felipe / Casco Viejo office.
+- Included in every rental: helmet, basic insurance, direct WhatsApp support.
+- English site: https://xopamotorental.com/en — French site: https://xopamotorental.com/fr
