@@ -66,7 +66,7 @@ export async function POST(request) {
     // Placeholder refundable deposit, collected in person (not processed
     // online — Xopa has no card-hold/AUTH integration yet, unlike Overland's
     // $1000-per-bike PagueloFacil AUTH hold).
-    const depositPerBike = 150;
+    const depositPerBike = 375;
     const totalDeposit = depositPerBike * qty;
 
     const uniqueToken = crypto.randomBytes(16).toString('hex');

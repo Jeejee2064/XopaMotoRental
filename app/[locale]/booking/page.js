@@ -202,7 +202,7 @@ export default function BookingPage() {
 
   const days = calculateDays();
   const { rentalPrice, subtotal, tax, cardFee, total } = calculateBookingTotal({ days, bikeQuantity });
-  const depositPerBike = 150;
+  const depositPerBike = 375;
   const totalDeposit = depositPerBike * bikeQuantity;
 
   const canProceedQuantity = bikeQuantity > 0;
