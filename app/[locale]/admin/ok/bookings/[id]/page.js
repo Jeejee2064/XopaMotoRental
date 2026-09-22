@@ -291,7 +291,12 @@ export default function BookingSharePage() {
         {/* Pricing */}
         <Section title="Pricing" icon="💰">
           <Row label="Total Price" value={`$${parseFloat(booking.total_price).toFixed(2)}`} />
-          <Row label="Security Deposit" value={`$${parseFloat(booking.deposit || 0).toFixed(2)} (at pickup)`} />
+          <Row
+            label="Security Deposit"
+            value={`$${parseFloat(booking.deposit || 0).toFixed(2)}${
+              booking.auth_status === 'authorized' ? ' (card hold authorized)' : ' (card hold pending)'
+            }`}
+          />
 
           <div style={{
             background: '#1c1814', borderRadius: 12,

@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react';
-import { XCircle, Edit2, Save, X, Bike, Mail } from 'lucide-react';
+import { XCircle, Edit2, Save, X, Bike, Mail, Link2, ShieldCheck } from 'lucide-react';
 import {
   getBookingMotorcycles,
   getAvailableMotorcyclesForEdit,
@@ -42,6 +42,56 @@ function SendConfirmationMailButton({ booking, notify }) {
       <Mail size={16} />
       {sending ? 'Sending…' : sent ? '✅ Confirmation Sent' : 'Send Confirmation Email'}
     </button>
+  );
+}
+
+// One row per bike, since each deposit is authorized (or not) independently.
+// Generates the *stable* /pay/[id]/auth?index=N page link — never a
+// PagueloFacil URL directly, since that one-time link expires after an hour
+// (see app/api/pay/auth/route.js) — and copies it to the clipboard for the
+// admin to send however they contact the customer (WhatsApp, email, ...).
+function DepositAuthRow({ booking, index, authCount, notify }) {
+  const [sending, setSending] = useState(false);
+  const authorized = authCount > index;
+
+  const handleGenerate = async () => {
+    setSending(true);
+    try {
+      const res = await fetch(`/api/admin/bookings/${booking.id}/send-deposit-link`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ index }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      await navigator.clipboard.writeText(data.url);
+      notify(`Deposit link #${index + 1} copied to clipboard`);
+    } catch (e) {
+      notify('Error: ' + e.message, 'error');
+    } finally {
+      setSending(false);
+    }
+  };
+
+  return (
+    <div className="flex items-center justify-between py-1.5">
+      <span className="text-sm text-white/70">
+        {booking.bike_quantity > 1 ? `Deposit #${index + 1}` : 'Deposit'} — $375.00
+      </span>
+      {authorized ? (
+        <span className="flex items-center gap-1.5 text-green-400 text-xs font-bold">
+          <ShieldCheck size={14} /> Authorized
+        </span>
+      ) : (
+        <button
+          onClick={handleGenerate}
+          disabled={sending}
+          className="flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold bg-cyan/10 text-cyan border border-cyan/30 hover:bg-cyan/20 transition disabled:opacity-50"
+        >
+          <Link2 size={13} /> {sending ? 'Generating…' : 'Copy deposit link'}
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -405,7 +455,7 @@ const BookingDetailModal = ({ booking, onClose, onStatusUpdate, onDelete, onPaym
                 {[
                   { label: 'Total Price', field: 'total_price' },
                   { label: 'Down Payment', field: 'down_payment' },
-                  { label: 'Security Deposit (at pickup)', field: 'deposit' },
+                  { label: 'Security Deposit', field: 'deposit' },
                 ].map(({ label, field }) => (
                   <div key={field}>
                     <p className="text-sm text-white/40 mb-1">{label}</p>
@@ -419,6 +469,16 @@ const BookingDetailModal = ({ booking, onClose, onStatusUpdate, onDelete, onPaym
                   </div>
                 ))}
               </div>
+
+              {!isEditing && (
+                <div className="pt-2 border-t border-white/10">
+                  <p className="text-xs font-bold text-white/40 uppercase tracking-wide mb-1">Deposit authorization (card hold)</p>
+                  {Array.from({ length: editedBooking.bike_quantity || 1 }, (_, i) => (
+                    <DepositAuthRow key={i} booking={editedBooking} index={i} authCount={editedBooking.auth_count || 0} notify={notify} />
+                  ))}
+                </div>
+              )}
+
               <div className="flex justify-between pt-2 border-t border-white/10">
                 <span className="text-white font-bold">Payment Status</span>
                 {isEditing ? (

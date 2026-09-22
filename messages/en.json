@@ -104,7 +104,7 @@
     "summaryTax": "ITBMS tax (7%)",
     "summaryCardFee": "Card fee (3.5%)",
     "summaryTotal": "Total to pay now",
-    "depositNote": "+ ${amount} refundable security deposit, paid at pickup (cash or card).",
+    "depositNote": "+ ${amount} refundable security deposit, authorized on your card (a separate link is sent to you) — never charged unless the bike comes back damaged.",
     "agreement": {
       "prefix": "I accept the",
       "terms": "Terms and conditions",
@@ -146,6 +146,29 @@
     "whatsappCta": "Message us on WhatsApp",
     "backHome": "Back to home",
     "retryCta": "Try again"
+  },
+  "AuthPage": {
+    "notFound": "We couldn't find that booking.",
+    "title": "Security deposit",
+    "subtitle": "This authorizes a hold on your card — it's not a charge. It's released automatically if the bike comes back undamaged.",
+    "customerLabel": "Name",
+    "itemLabel": "Item",
+    "amountLabel": "Amount held",
+    "depositLabel": "Security deposit",
+    "depositLabelIndexed": "Security deposit #{index} of {total}",
+    "disclaimer": "You'll be redirected to our secure payment provider to enter your card details.",
+    "payCta": "Authorize deposit",
+    "alreadyAuthorizedTitle": "Already authorized",
+    "alreadyAuthorizedSubtitle": "This deposit is already on hold — nothing more to do here."
+  },
+  "AuthSuccessPage": {
+    "loading": "Confirming your deposit…",
+    "successTitle": "Deposit authorized!",
+    "successSubtitle": "We've placed the hold on your card. We'll email you a confirmation.",
+    "timeoutTitle": "Still confirming",
+    "timeoutSubtitle": "If your card was charged but this didn't update, message us and we'll sort it out.",
+    "whatsappCta": "Message us on WhatsApp",
+    "backHome": "Back to home"
   },
   "HomePage": {
     "hero": "XOPA. Let's roll.",
@@ -287,7 +310,7 @@
     "section2Title": "2. Rider requirements",
     "section2Body": "The rider must be 21 or older, present a valid motorcycle license and a valid ID.",
     "section3Title": "3. Security deposit",
-    "section3Body": "A refundable security deposit is required. It's returned in full at the end of the rental if the bike is returned undamaged.",
+    "section3Body": "A refundable security deposit is required, authorized as a hold on your card (not a charge). It's released in full at the end of the rental if the bike is returned undamaged.",
     "section4Title": "4. Cancellations",
     "section4Body": "Cancellation and refund conditions are confirmed at the time of booking online.",
     "section5Title": "5. Contact",

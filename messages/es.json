@@ -104,7 +104,7 @@
     "summaryTax": "ITBMS (7%)",
     "summaryCardFee": "Comisión de tarjeta (3.5%)",
     "summaryTotal": "Total a pagar ahora",
-    "depositNote": "+ ${amount} de depósito de garantía reembolsable, a pagar en la entrega (efectivo o tarjeta).",
+    "depositNote": "+ ${amount} de depósito de garantía reembolsable, autorizado en tu tarjeta (te enviamos un enlace aparte) — nunca se cobra salvo que la moto vuelva dañada.",
     "agreement": {
       "prefix": "Acepto los",
       "terms": "Términos y condiciones",
@@ -146,6 +146,29 @@
     "whatsappCta": "Escríbenos por WhatsApp",
     "backHome": "Volver al inicio",
     "retryCta": "Intentar de nuevo"
+  },
+  "AuthPage": {
+    "notFound": "No encontramos esa reserva.",
+    "title": "Depósito de garantía",
+    "subtitle": "Esto autoriza una retención en tu tarjeta, no es un cobro. Se libera automáticamente si la moto se devuelve sin daños.",
+    "customerLabel": "Nombre",
+    "itemLabel": "Concepto",
+    "amountLabel": "Monto retenido",
+    "depositLabel": "Depósito de garantía",
+    "depositLabelIndexed": "Depósito de garantía #{index} de {total}",
+    "disclaimer": "Serás redirigido a nuestro proveedor de pago seguro para ingresar los datos de tu tarjeta.",
+    "payCta": "Autorizar depósito",
+    "alreadyAuthorizedTitle": "Ya autorizado",
+    "alreadyAuthorizedSubtitle": "Este depósito ya está retenido — no hay nada más que hacer aquí."
+  },
+  "AuthSuccessPage": {
+    "loading": "Confirmando tu depósito…",
+    "successTitle": "¡Depósito autorizado!",
+    "successSubtitle": "Ya hicimos la retención en tu tarjeta. Te enviaremos un correo de confirmación.",
+    "timeoutTitle": "Aún confirmando",
+    "timeoutSubtitle": "Si tu tarjeta fue cargada pero esto no se actualizó, escríbenos y lo resolvemos.",
+    "whatsappCta": "Escríbenos por WhatsApp",
+    "backHome": "Volver al inicio"
   },
   "HomePage": {
     "hero": "XOPA? dale máquina!",
@@ -287,7 +310,7 @@
     "section2Title": "2. Requisitos del conductor",
     "section2Body": "El conductor debe ser mayor de 21 años, presentar una licencia de conducir motos vigente y un documento de identidad válido.",
     "section3Title": "3. Depósito de garantía",
-    "section3Body": "Se solicita un depósito reembolsable como garantía. Se devuelve íntegro al finalizar el alquiler si la moto se entrega sin daños.",
+    "section3Body": "Se solicita un depósito reembolsable como garantía, autorizado como retención en tu tarjeta (no es un cobro). Se libera íntegro al finalizar el alquiler si la moto se entrega sin daños.",
     "section4Title": "4. Cancelaciones",
     "section4Body": "Las condiciones de cancelación y reembolso se confirman al momento de la reserva en línea.",
     "section5Title": "5. Contacto",

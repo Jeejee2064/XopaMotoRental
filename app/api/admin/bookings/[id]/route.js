@@ -11,7 +11,7 @@ const ALLOWED_FIELDS = [
   'start_date', 'end_date', 'bike_quantity',
   'total_price', 'down_payment', 'deposit', 'special_requests', 'important_note', 'hear_about_us',
   'status', 'payment_status', 'webhook_received',
-  'paid',
+  'paid', 'auth_status', 'auth_count',
 ];
 
 async function requireAdmin(request) {

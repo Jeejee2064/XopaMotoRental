@@ -66,8 +66,9 @@ create table if not exists public.bookings (
   webhook_received boolean not null default false,
   pending_verification boolean not null default false,
 
-  -- PagueloFacil integration (mirrors Overland's shape; not wired for Xopa
-  -- yet — no PAGUELOFACIL_CCLW merchant key provisioned for this brand).
+  -- PagueloFacil integration (mirrors Overland's shape). paguelofacil_* cover
+  -- the main rental payment; auth_* cover the separate $375/bike security
+  -- deposit card-hold flow (app/api/pay/auth, app/api/pay/confirm).
   paguelofacil_token text,
   paguelofacil_cclw text,
   paguelofacil_transaction_id text,

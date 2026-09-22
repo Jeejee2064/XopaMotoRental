@@ -104,7 +104,7 @@
     "summaryTax": "ITBMS (7%)",
     "summaryCardFee": "Frais de carte (3,5%)",
     "summaryTotal": "Total à payer maintenant",
-    "depositNote": "+ ${amount} de dépôt de garantie remboursable, à payer au retrait (espèces ou carte).",
+    "depositNote": "+ ${amount} de dépôt de garantie remboursable, autorisé sur ta carte (un lien séparé te sera envoyé) — jamais débité sauf si la moto revient endommagée.",
     "agreement": {
       "prefix": "J'accepte les",
       "terms": "Conditions générales",
@@ -146,6 +146,29 @@
     "whatsappCta": "Écris-nous sur WhatsApp",
     "backHome": "Retour à l'accueil",
     "retryCta": "Réessayer"
+  },
+  "AuthPage": {
+    "notFound": "Réservation introuvable.",
+    "title": "Dépôt de garantie",
+    "subtitle": "Ceci autorise une retenue sur ta carte, ce n'est pas un débit. Elle est libérée automatiquement si la moto est rendue sans dommage.",
+    "customerLabel": "Nom",
+    "itemLabel": "Concerne",
+    "amountLabel": "Montant retenu",
+    "depositLabel": "Dépôt de garantie",
+    "depositLabelIndexed": "Dépôt de garantie #{index} sur {total}",
+    "disclaimer": "Tu seras redirigé vers notre prestataire de paiement sécurisé pour saisir tes coordonnées bancaires.",
+    "payCta": "Autoriser le dépôt",
+    "alreadyAuthorizedTitle": "Déjà autorisé",
+    "alreadyAuthorizedSubtitle": "Ce dépôt est déjà retenu — il n'y a rien d'autre à faire ici."
+  },
+  "AuthSuccessPage": {
+    "loading": "Confirmation de ton dépôt…",
+    "successTitle": "Dépôt autorisé !",
+    "successSubtitle": "La retenue a été placée sur ta carte. Tu vas recevoir un e-mail de confirmation.",
+    "timeoutTitle": "Confirmation en cours",
+    "timeoutSubtitle": "Si ta carte a été débitée mais que ça ne s'est pas mis à jour, écris-nous et on règle ça.",
+    "whatsappCta": "Écris-nous sur WhatsApp",
+    "backHome": "Retour à l'accueil"
   },
   "HomePage": {
     "hero": "XOPA? plein GAZ !",
@@ -287,7 +310,7 @@
     "section2Title": "2. Conditions du conducteur",
     "section2Body": "Le conducteur doit avoir 21 ans ou plus, présenter un permis moto valide et une pièce d'identité valide.",
     "section3Title": "3. Dépôt de garantie",
-    "section3Body": "Un dépôt remboursable est demandé en garantie. Il est intégralement restitué à la fin de la location si la moto est rendue sans dommage.",
+    "section3Body": "Un dépôt remboursable est demandé en garantie, autorisé comme retenue sur ta carte (ce n'est pas un débit). Il est intégralement libéré à la fin de la location si la moto est rendue sans dommage.",
     "section4Title": "4. Annulations",
     "section4Body": "Les conditions d'annulation et de remboursement sont confirmées au moment de la réservation en ligne.",
     "section5Title": "5. Contact",
