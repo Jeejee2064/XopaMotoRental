@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Calendar, MessageSquare, Bike, TrendingUp, Link as LinkIcon } from 'lucide-react';
+import { Calendar, MessageSquare, Bike, TrendingUp, Link as LinkIcon, BarChart3 } from 'lucide-react';
 
 const AdminNavigation = ({ activeTab, setActiveTab, stats = {} }) => {
   const pending = stats.pendingBookings || 0;
@@ -13,6 +13,7 @@ const AdminNavigation = ({ activeTab, setActiveTab, stats = {} }) => {
     { id: 'overview', label: 'Overview', icon: TrendingUp },
     { id: 'motorcycles', label: 'Motorcycles', icon: Bike },
     { id: 'revenue', label: 'Revenue', icon: TrendingUp },
+    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
     { id: 'link-generator', label: 'Links', icon: LinkIcon },
   ];
 

@@ -9,6 +9,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ButtonPrimary from '@/components/ButtonPrimary';
 import { siteConfig } from '@/lib/site-config';
+import { trackFunnelStep } from '@/lib/analytics/track';
 
 // The PagueloFacil RETURN_URL target for the deposit AUTH flow — confirms
 // client-side off the redirect's query params (Estado/Oper/TotalPagado),
@@ -43,6 +44,7 @@ function AuthSuccessContent() {
           const data = await res.json();
           if (!cancelled && data.success) {
             setStatus('success');
+            trackFunnelStep('deposit_auth_completed', { metadata: { bookingId } });
             return;
           }
         }

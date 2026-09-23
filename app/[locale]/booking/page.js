@@ -13,6 +13,9 @@ import BookingCalendar from '@/components/BookingCalendar';
 import { checkBikesAvailableByModel, getFleetSize } from '@/lib/supabase/bookings';
 import { calculateBookingTotal } from '@/lib/pricing';
 import { siteConfig } from '@/lib/site-config';
+import { trackFunnelStep } from '@/lib/analytics/track';
+
+const STEP_NAMES = { 1: 'booking_step_quantity', 2: 'booking_step_dates', 3: 'booking_step_details', 4: 'booking_step_review' };
 
 // Xopa has one model/location today, so this is normally a 4-step flow
 // (quantity → dates → details → review+pay) instead of Overland's 5-step one
@@ -182,6 +185,8 @@ export default function BookingPage() {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    trackFunnelStep(STEP_NAMES[currentStep] || `booking_step_${currentStep}`, { path: '/booking', locale });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentStep]);
 
   useEffect(() => {
@@ -262,6 +267,11 @@ export default function BookingPage() {
       const { url, error } = await response.json();
       if (error) throw new Error(error);
       if (!url) throw new Error(t('missingPaymentUrl'));
+      trackFunnelStep('booking_payment_initiated', {
+        path: '/booking',
+        locale,
+        metadata: { bikeQuantity, days, total, hearAboutUs: formData.hearAboutUs || null }
+      });
       window.location.href = url;
     } catch (error) {
       showModal('error', error.message || t('bookingError'));

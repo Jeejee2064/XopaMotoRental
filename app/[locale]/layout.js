@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import './globals.css';
 import { Analytics } from '@vercel/analytics/next';
 import WhatsApp from '@/components/Whatsapp';
+import AnalyticsTracker from '@/components/analytics/AnalyticsTracker';
 import { siteConfig } from '@/lib/site-config';
 
 const locales = ['es', 'en', 'fr'];
@@ -199,6 +200,7 @@ export default async function RootLayout({ children, params }) {
           {children}
           <WhatsApp />
           <Analytics />
+          <AnalyticsTracker />
         </NextIntlClientProvider>
       </body>
     </html>

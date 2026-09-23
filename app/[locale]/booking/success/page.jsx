@@ -10,6 +10,7 @@ import Footer from '@/components/Footer';
 import ButtonPrimary from '@/components/ButtonPrimary';
 import ButtonSecondary from '@/components/ButtonSecondary';
 import { siteConfig } from '@/lib/site-config';
+import { trackFunnelStep } from '@/lib/analytics/track';
 
 export default function BookingSuccessPage() {
   const t = useTranslations('SuccessPage');
@@ -50,6 +51,17 @@ export default function BookingSuccessPage() {
           setTimeout(poll, 2000);
         } else {
           setLoading(false);
+          if (data.booking.status !== 'pending') {
+            trackFunnelStep('booking_confirmed', {
+              path: '/booking/success',
+              locale,
+              metadata: {
+                status: data.booking.status,
+                bikeQuantity: data.booking.bike_quantity,
+                totalPrice: data.booking.total_price
+              }
+            });
+          }
         }
       } catch {
         if (!cancelled) {

@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import { trackFunnelStep } from '@/lib/analytics/track';
 
 export default function AuthPayButton({ bookingId, index, locale, label }) {
   const [loading, setLoading] = useState(false);
@@ -16,6 +17,7 @@ export default function AuthPayButton({ bookingId, index, locale, label }) {
       });
       const data = await res.json();
       if (!res.ok || !data.url) throw new Error(data.error || 'Failed to start payment');
+      trackFunnelStep('deposit_auth_started', { locale, metadata: { bookingId, index } });
       window.location.href = data.url;
     } catch (e) {
       setError(e.message);

@@ -17,6 +17,7 @@ import BookingDetailModal from '@/components/admin/BookingDetailModal';
 import AddBookingModal from '@/components/admin/AddBookingModal';
 import BookingLinkGeneratorTab from '@/components/admin/BookingLinkGeneratorTab';
 import RevenueTab from '@/components/admin/RevenueTab';
+import AnalyticsTab from '@/components/admin/AnalyticsTab';
 
 const EMPTY_BOOKING = {
   first_name: '',
@@ -319,6 +320,7 @@ const AdminDashboardClient = () => {
         )}
         {activeTab === 'motorcycles' && <MotorcyclesTab />}
         {activeTab === 'revenue' && <RevenueTab bookings={bookings} />}
+        {activeTab === 'analytics' && <AnalyticsTab />}
         {activeTab === 'link-generator' && <BookingLinkGeneratorTab />}
       </main>
 

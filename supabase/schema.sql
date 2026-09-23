@@ -171,6 +171,38 @@ join public.booking_motorcycles bm on bm.motorcycle_id = m.id
 join public.bookings b on b.id = bm.booking_id;
 
 -- ============================================================
+-- analytics_events — behavior tracking (page views, link clicks, sales
+-- funnel steps). Written by app/api/track-event (service-role client, best
+-- effort, never blocks the visitor) and read by the admin dashboard's
+-- Analytics tab. No IP/user-agent is stored — session_id/visitor_id are
+-- random client-generated ids (see lib/analytics/track.js), not derived
+-- from anything personally identifying, matching the no-PII stance already
+-- used for partner-click tracking (see app/api/track-partner-click).
+-- ============================================================
+create table if not exists public.analytics_events (
+  id uuid primary key default gen_random_uuid(),
+  event_type text not null
+    check (event_type in ('page_view', 'link_click', 'funnel_step')),
+  event_name text not null,       -- e.g. 'fleet_view', 'booking_payment_initiated'
+  path text,                      -- page path the event fired from
+  locale text,
+  href text,                      -- link_click only: the target URL
+  referrer text,
+  session_id text not null,       -- groups events within one browser tab session
+  visitor_id text,                -- longer-lived, groups sessions from a returning visitor
+  metadata jsonb,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists analytics_events_created_at_idx on public.analytics_events (created_at);
+create index if not exists analytics_events_type_name_idx on public.analytics_events (event_type, event_name);
+create index if not exists analytics_events_session_id_idx on public.analytics_events (session_id);
+
+alter table public.analytics_events enable row level security;
+-- No anon policies — same pattern as bookings/messages: all reads/writes go
+-- through server-side API routes using the service_role key.
+
+-- ============================================================
 -- RPC: check_bikes_available_by_model
 -- Count of a given model, at a given location, with zero overlapping
 -- active bookings across [p_start_date, p_end_date].
