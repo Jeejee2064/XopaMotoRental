@@ -273,7 +273,10 @@
     "requirement2": "A valid motorcycle license",
     "requirement3": "ID or passport",
     "requirement4": "A refundable security deposit",
-    "cta": "Start your booking"
+    "cta": "Start your booking",
+    "stayTitle": "Where to stay in Panama City",
+    "stayDesc": "Need a place to stay before or after your road trip? Our partner Acomodo Rentals offers furnished, well-located apartments in Panama City.",
+    "stayCta": "Discover Acomodo Rentals"
   },
   "HowItWorksMetadata": {
     "title": "How the rental works",

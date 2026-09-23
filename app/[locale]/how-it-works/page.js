@@ -1,9 +1,10 @@
 import { useTranslations } from 'next-intl';
-import { CircleCheck } from 'lucide-react';
+import { CircleCheck, ArrowUpRight } from 'lucide-react';
 
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ButtonPrimary from '@/components/ButtonPrimary';
+import AcomodoLink from '@/components/AcomodoLink';
 import { Reveal, Stagger, StaggerItem } from '@/components/motion';
 
 export default function HowItWorksPage() {
@@ -53,6 +54,23 @@ export default function HowItWorksPage() {
           </Stagger>
           <Reveal>
             <ButtonPrimary href="/booking" text={t('cta')} />
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Accommodation partner — Acomodo Rentals (referral, clicks tracked) */}
+      <section className="py-16 px-4 bg-noir border-t border-gris/20">
+        <div className="max-w-2xl mx-auto text-center">
+          <Reveal>
+            <h2 className="text-2xl font-heading font-bold text-white mb-2">{t('stayTitle')}</h2>
+            <p className="text-gris mb-8">{t('stayDesc')}</p>
+            <AcomodoLink
+              source="how-it-works-stay"
+              className="inline-flex items-center justify-center gap-3 border border-gris/20 px-6 py-4 hover:border-cyan transition-colors duration-200 group font-heading font-bold uppercase tracking-wide text-white"
+            >
+              {t('stayCta')}
+              <ArrowUpRight size={20} className="text-gris group-hover:text-cyan transition-colors duration-200" />
+            </AcomodoLink>
           </Reveal>
         </div>
       </section>

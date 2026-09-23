@@ -273,7 +273,10 @@
     "requirement2": "Un permis moto valide",
     "requirement3": "Une pièce d'identité ou un passeport",
     "requirement4": "Un dépôt de garantie remboursable",
-    "cta": "Commence ta réservation"
+    "cta": "Commence ta réservation",
+    "stayTitle": "Où dormir à Panama City",
+    "stayDesc": "Tu cherches un logement avant ou après ton road trip ? Notre partenaire Acomodo Rentals propose des appartements meublés et bien situés à Panama City.",
+    "stayCta": "Découvrir Acomodo Rentals"
   },
   "HowItWorksMetadata": {
     "title": "Comment fonctionne la location",
