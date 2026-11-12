@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations, useLocale } from 'next-intl';
 import { AlertCircle, ChevronRight, ChevronLeft, Edit2, CreditCard, Loader2 } from 'lucide-react';
@@ -325,12 +326,19 @@ export default function BookingPage() {
                     <button
                       key={m.id}
                       onClick={() => handleModelSelect(m.id)}
-                      className={`p-5 border-2 text-left transition-colors duration-150 ${
+                      className={`text-left border-2 transition-colors duration-150 overflow-hidden ${
                         selectedModel === m.id ? 'border-jaune bg-jaune/10' : 'border-gris/20 hover:border-gris/40'
                       }`}
                     >
-                      <div className="text-xs text-gris uppercase tracking-wide">{m.brand}</div>
-                      <div className="text-2xl font-heading font-black text-jaune">{m.name}</div>
+                      {m.thumb && (
+                        <div className="relative aspect-[4/3]">
+                          <Image src={m.thumb} alt={m.label} fill className="object-cover" sizes="(min-width: 640px) 288px, 100vw" />
+                        </div>
+                      )}
+                      <div className="p-4">
+                        <div className="text-xs text-gris uppercase tracking-wide">{m.brand}</div>
+                        <div className="text-2xl font-heading font-black text-jaune">{m.name}</div>
+                      </div>
                     </button>
                   ))}
                 </div>
