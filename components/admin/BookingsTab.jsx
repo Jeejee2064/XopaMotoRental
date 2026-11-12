@@ -1,6 +1,7 @@
 'use client'
 import React, { useState } from 'react';
 import { Search, Package, Mail, AlertTriangle } from 'lucide-react';
+import { Link } from '@/navigation';
 import ImportantNoteModal from '@/components/admin/ImportantNoteModal';
 
 // Single model/location, so unlike Overland's version there's no
@@ -12,7 +13,6 @@ const BookingsTab = ({
   setSearchTerm,
   filterStatus,
   setFilterStatus,
-  onViewDetails,
   onAddBooking,
 }) => {
   const [noteBooking, setNoteBooking] = useState(null);
@@ -169,12 +169,12 @@ const BookingsTab = ({
 
                     {/* Actions */}
                     <td className="px-6 py-4">
-                      <button
-                        onClick={() => onViewDetails(booking)}
+                      <Link
+                        href={`/admin/ok/bookings/${booking.id}`}
                         className="text-jaune hover:text-jaune/80 font-semibold text-sm"
                       >
                         View
-                      </button>
+                      </Link>
                     </td>
 
                   </tr>

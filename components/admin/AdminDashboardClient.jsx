@@ -13,7 +13,6 @@ import BookingsTab from '@/components/admin/BookingsTab';
 import MessagesTab from '@/components/admin/MessagesTab';
 import CalendarTab from '@/components/admin/CalendarTab';
 import MotorcyclesTab from '@/components/admin/MotorcyclesTab';
-import BookingDetailModal from '@/components/admin/BookingDetailModal';
 import AddBookingModal from '@/components/admin/AddBookingModal';
 import BookingLinkGeneratorTab from '@/components/admin/BookingLinkGeneratorTab';
 import RevenueTab from '@/components/admin/RevenueTab';
@@ -42,11 +41,14 @@ const EMPTY_BOOKING = {
 const AdminDashboardClient = () => {
   const router = useRouter();
 
-  const [activeTab, setActiveTab] = useState('calendar');
+  const [activeTab, setActiveTabState] = useState('calendar');
+  const setActiveTab = (tab) => {
+    setActiveTabState(tab);
+    window.history.replaceState(null, '', `?tab=${tab}`);
+  };
   const [bookings, setBookings] = useState([]);
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedBooking, setSelectedBooking] = useState(null);
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -80,6 +82,9 @@ const AdminDashboardClient = () => {
 
   useEffect(() => {
     loadData();
+    // Restore the tab when coming back from a booking page (/admin/ok?tab=bookings).
+    const tab = new URLSearchParams(window.location.search).get('tab');
+    if (tab) setActiveTabState(tab);
   }, []);
 
   const handleLogout = async () => {
@@ -87,42 +92,6 @@ const AdminDashboardClient = () => {
       await fetch('/api/admin-logout', { method: 'POST' });
     } finally {
       router.push('/admin');
-    }
-  };
-
-  const refreshSelectedBooking = async (bookingId) => {
-    try {
-      const freshBookings = await getAllBookings();
-      const updatedBooking = freshBookings.find(b => b.id === bookingId);
-      if (updatedBooking) setSelectedBooking(updatedBooking);
-      setBookings(freshBookings);
-    } catch (error) {
-      console.error('Error refreshing booking:', error);
-    }
-  };
-
-  const handleBookingUpdate = async () => {
-    if (selectedBooking) await refreshSelectedBooking(selectedBooking.id);
-    await loadData();
-  };
-
-  const handlePaymentToggle = async (bookingId, newPaidStatus) => {
-    try {
-      const updates = newPaidStatus
-        ? { paid: true, status: 'fully paid', payment_status: 'paid' }
-        : { paid: false };
-      const res = await fetch(`/api/admin/bookings/${bookingId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updates),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to update payment');
-      await refreshSelectedBooking(bookingId);
-      await loadData();
-      notify('Payment marked as fully paid!');
-    } catch (error) {
-      notify('Error updating payment: ' + error.message, 'error');
     }
   };
 
@@ -135,38 +104,6 @@ const AdminDashboardClient = () => {
     avgBookingValue: bookings.length > 0
       ? bookings.reduce((sum, b) => sum + parseFloat(b.total_price), 0) / bookings.length
       : 0,
-  };
-
-  const handleStatusUpdate = async (bookingId, newStatus) => {
-    try {
-      const res = await fetch(`/api/admin/bookings/${bookingId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ status: newStatus }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Failed to update status');
-      await refreshSelectedBooking(bookingId);
-      await loadData();
-      notify('Status updated successfully!');
-    } catch (error) {
-      notify('Error updating status: ' + error.message, 'error');
-    }
-  };
-
-  const handleDeleteBooking = async (bookingId) => {
-    withConfirm('Delete this booking? This cannot be undone.', async () => {
-      try {
-        const res = await fetch(`/api/admin/bookings/${bookingId}`, { method: 'DELETE' });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Failed to delete booking');
-        await loadData();
-        setSelectedBooking(null);
-        notify('Booking deleted.');
-      } catch (error) {
-        notify('Error deleting booking: ' + error.message, 'error');
-      }
-    });
   };
 
   const handleMarkMessageRead = async (messageId) => {
@@ -302,7 +239,6 @@ const AdminDashboardClient = () => {
             setSearchTerm={setSearchTerm}
             filterStatus={filterStatus}
             setFilterStatus={setFilterStatus}
-            onViewDetails={setSelectedBooking}
             onAddBooking={() => setShowAddBooking(true)}
           />
         )}
@@ -324,16 +260,6 @@ const AdminDashboardClient = () => {
         {activeTab === 'analytics' && <AnalyticsTab />}
         {activeTab === 'link-generator' && <BookingLinkGeneratorTab />}
       </main>
-
-      <BookingDetailModal
-        booking={selectedBooking}
-        onClose={() => setSelectedBooking(null)}
-        onStatusUpdate={handleStatusUpdate}
-        onDelete={handleDeleteBooking}
-        onPaymentToggle={handlePaymentToggle}
-        onUpdate={handleBookingUpdate}
-        notify={notify}
-      />
 
       <AddBookingModal
         show={showAddBooking}
