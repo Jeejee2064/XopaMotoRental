@@ -390,6 +390,16 @@ export default function BookingDetailPage({ id }) {
               <span className="text-cyan font-semibold">{model.label}</span> · {fmtDate(booking.start_date)} → {fmtDate(booking.end_date)}
             </p>
           </div>
+          <button
+            onClick={async () => {
+              await navigator.clipboard.writeText(`${window.location.origin}/customerbookings/${booking.id}`);
+              notify('Customer link copied');
+            }}
+            className="flex items-center gap-2 px-3 py-2 text-cyan border border-cyan/40 hover:bg-cyan/10 transition shrink-0 text-sm font-semibold"
+            title="Copy customer link"
+          >
+            <Link2 size={16} /> <span className="hidden sm:inline">Copy customer link</span>
+          </button>
           {!isEditing && (
             <button
               onClick={startEdit}
