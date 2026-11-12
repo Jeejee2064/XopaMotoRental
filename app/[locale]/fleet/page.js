@@ -6,25 +6,30 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ButtonPrimary from '@/components/ButtonPrimary';
 import { Reveal, Stagger, StaggerItem } from '@/components/motion';
+import { siteConfig } from '@/lib/site-config';
 
-// Single model for now — structured as a list so adding the next bike later
-// (bigger cc, scooter, whatever comes next) is a matter of appending an entry,
-// not restructuring the page.
+// Driven by siteConfig.fleet.models — each model has a matching
+// FleetPage.<messageKey> entry in messages/*.json.
 function getFleet(t) {
-  return [
-    {
-      brand: t('modelBrand'),
-      name: t('modelName'),
-      tagline: t('modelTagline'),
-      desc: t('modelDesc'),
+  return siteConfig.fleet.models.map((model) => {
+    const k = model.messageKey;
+    return {
+      id: model.id,
+      images: model.images,
+      imageCredit: model.imageCredit,
+      brand: t(`${k}.brand`),
+      name: t(`${k}.name`),
+      tagline: t(`${k}.tagline`),
+      desc: t(`${k}.desc`),
+      cta: t(`${k}.cta`),
       specs: [
-        { label: t('specDisplacement'), value: t('specDisplacementValue') },
-        { label: t('specCategory'), value: t('specCategoryValue') },
-        { label: t('specUse'), value: t('specUseValue') },
-        { label: t('specComfort'), value: t('specComfortValue') }
+        { label: t('specDisplacement'), value: t(`${k}.specDisplacementValue`) },
+        { label: t('specCategory'), value: t(`${k}.specCategoryValue`) },
+        { label: t('specUse'), value: t(`${k}.specUseValue`) },
+        { label: t('specComfort'), value: t(`${k}.specComfortValue`) }
       ]
-    }
-  ];
+    };
+  });
 }
 
 export default function FleetPage() {
@@ -44,20 +49,33 @@ export default function FleetPage() {
         </Reveal>
       </section>
 
-      {fleet.map((bike) => (
-        <section key={bike.name} className="py-20 px-4">
+      {fleet.map((bike, index) => (
+        <section key={bike.id} id={bike.id.toLowerCase()} className={`py-20 px-4 ${index > 0 ? 'border-t border-gris/20' : ''}`}>
           <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-14 items-start">
-            <Stagger className="grid grid-cols-2 gap-3">
-              <StaggerItem className="col-span-2 aspect-[4/3] relative overflow-hidden">
-                <Image src="/hero.jpeg" alt={`${bike.brand} ${bike.name}`} fill className="object-cover" priority />
-              </StaggerItem>
-              <StaggerItem className="aspect-square relative overflow-hidden">
-                <Image src="/RX250.jpeg" alt={`${bike.brand} ${bike.name}`} fill className="object-cover" />
-              </StaggerItem>
-              <StaggerItem className="aspect-square relative overflow-hidden">
-                <Image src="/riding.jpeg" alt={`${bike.brand} ${bike.name} en circulation`} fill className="object-cover" />
-              </StaggerItem>
-            </Stagger>
+            <div>
+              <Stagger className="grid grid-cols-2 gap-3">
+                {bike.images.map((src, i) => (
+                  <StaggerItem
+                    key={src}
+                    className={`relative overflow-hidden ${i === 0 ? 'col-span-2 aspect-[4/3]' : 'aspect-square'}`}
+                  >
+                    <Image
+                      src={src}
+                      alt={`${bike.brand} ${bike.name}`}
+                      fill
+                      className="object-cover"
+                      priority={index === 0 && i === 0}
+                      sizes="(min-width: 1024px) 50vw, 100vw"
+                    />
+                  </StaggerItem>
+                ))}
+              </Stagger>
+              {bike.imageCredit && (
+                <p className="text-gris/50 text-xs mt-2">
+                  {t('photoCredit')} {bike.imageCredit}
+                </p>
+              )}
+            </div>
 
             <Reveal delay={0.15}>
               <p className="text-cyan font-heading font-bold uppercase tracking-wide mb-1">{bike.brand}</p>
@@ -85,7 +103,7 @@ export default function FleetPage() {
                 ))}
               </ul>
 
-              <ButtonPrimary href="/booking" text={t('cta')} />
+              <ButtonPrimary href="/booking" text={bike.cta} />
             </Reveal>
           </div>
         </section>

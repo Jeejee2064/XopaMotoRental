@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { pageMetadata } from '@/lib/seo';
-import { getRentalPriceForDays } from '@/lib/pricing';
+import { getRentalPriceForDays, getPricingForModel } from '@/lib/pricing';
+import { siteConfig } from '@/lib/site-config';
 
 export async function generateMetadata({ params }) {
   const { locale } = await params;
@@ -20,14 +21,14 @@ export default async function PricingLayout({ children, params }) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
   const pricingUrl = `${baseUrl}${locale === 'es' ? '' : `/${locale}`}/pricing`;
 
-  // Kept in sync with lib/pricing.js (RX250_PRICING) rather than re-parsing
+  // Kept in sync with lib/pricing.js (MODEL_PRICING) rather than re-parsing
   // the "$60"-style display strings in messages/*.json.
-  const productSchema = {
+  const productSchema = siteConfig.fleet.models.map((model) => ({
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: 'SPI RX250 — XOPA Moto Rental',
+    name: `${model.label} — XOPA Moto Rental`,
     description: t('intro'),
-    brand: { '@type': 'Brand', name: 'SPI' },
+    brand: { '@type': 'Brand', name: model.brand },
     offers: [
       { days: 1, label: t('dayLabel') },
       { days: 7, label: t('weekLabel') },
@@ -35,12 +36,12 @@ export default async function PricingLayout({ children, params }) {
     ].map(({ days, label }) => ({
       '@type': 'Offer',
       name: label,
-      price: String(getRentalPriceForDays(days)),
+      price: String(getRentalPriceForDays(days, getPricingForModel(model.id))),
       priceCurrency: 'USD',
       url: pricingUrl,
       availability: 'https://schema.org/InStock'
     }))
-  };
+  }));
 
   return (
     <>

@@ -3,11 +3,11 @@ import { Resend } from 'resend';
 import { getSupabaseAdmin } from '@/lib/supabase/admin-client';
 import { ADMIN_SESSION_COOKIE, verifyAdminSessionToken } from '@/lib/admin-auth';
 import { generateCustomerEmailHTML } from '@/lib/emails/customerEmail';
+import { getFleetModel } from '@/lib/site-config';
 
 export const runtime = 'nodejs';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const MODEL_LABEL = 'SPI RX250';
 
 // Re-sends the same confirmation email the customer (and any additional
 // riders with an email on file) got when the booking was first paid — for
@@ -31,9 +31,11 @@ export async function POST(request, { params }) {
       return NextResponse.json({ error: 'Booking not found' }, { status: 404 });
     }
 
+    const MODEL_LABEL = getFleetModel(booking.motorcycle_model).label;
+
     const { data: bookingMotorcycles } = await supabase
       .from('booking_motorcycles')
-      .select('motorcycles ( id, name )')
+      .select('motorcycles ( id, name, plate )')
       .eq('booking_id', id);
     const assigned = (bookingMotorcycles || []).map((bm) => bm.motorcycles).filter(Boolean);
 

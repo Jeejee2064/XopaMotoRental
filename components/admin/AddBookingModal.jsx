@@ -1,9 +1,9 @@
 'use client'
 import React from 'react';
 import { XCircle } from 'lucide-react';
+import { siteConfig } from '@/lib/site-config';
 
-// Single model/location, so unlike Overland's version there's no
-// location/model picker — every booking is the same bike at Panama City.
+// One location (Panama City); the model is picked per booking.
 const AddBookingModal = ({ show, onClose, newBooking, setNewBooking, onSubmit, calculateDays, calculatePrice, riders, setRiders, isSubmitting }) => {
   if (!show) return null;
 
@@ -75,6 +75,16 @@ const AddBookingModal = ({ show, onClose, newBooking, setNewBooking, onSubmit, c
           <div>
             <h3 className="text-lg font-bold text-white mb-4">Trip Details</h3>
             <div className="grid md:grid-cols-3 gap-4">
+              <div className="md:col-span-3">
+                <label className="block text-sm font-semibold text-white/60 mb-2">Model *</label>
+                <select required value={newBooking.motorcycle_model}
+                  onChange={(e) => setNewBooking({ ...newBooking, motorcycle_model: e.target.value })}
+                  className={inputClass}>
+                  {siteConfig.fleet.models.map(m => (
+                    <option key={m.id} value={m.id} className="bg-[#131316]">{m.label}</option>
+                  ))}
+                </select>
+              </div>
               <div>
                 <label className="block text-sm font-semibold text-white/60 mb-2">Start Date *</label>
                 <input type="date" required value={newBooking.start_date}

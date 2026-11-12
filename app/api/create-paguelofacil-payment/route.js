@@ -1,15 +1,13 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 import { getSupabaseAdmin } from '@/lib/supabase/admin-client';
-import { siteConfig } from '@/lib/site-config';
+import { siteConfig, getFleetModel } from '@/lib/site-config';
 import { calculateBookingTotal } from '@/lib/pricing';
 
-// Xopa starts with a single model/location, so unlike Overland's route there's
-// no model/location validation branching — just the one combo. Also: Xopa
+// The requested model must be one of siteConfig.fleet.models (one location).
+// Also: Xopa
 // charges the FULL rental total online (no 50/50 down-payment split like
 // Overland) — a better fit for its much lower ticket size. See plan notes.
-const MODEL_LABEL = 'SPI RX250';
-
 export async function POST(request) {
   const supabase = getSupabaseAdmin();
 
@@ -24,6 +22,7 @@ export async function POST(request) {
       startDate,
       endDate,
       bikeQuantity,
+      model,
       calculatedDays,
       locale = 'es',
       specialRequests,
@@ -34,6 +33,12 @@ export async function POST(request) {
     if (!firstName || !lastName || !email || !startDate || !endDate || !bikeQuantity) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
+
+    const fleetModel = siteConfig.fleet.models.find((m) => m.id === model);
+    if (!fleetModel) {
+      return NextResponse.json({ error: 'Invalid motorcycle model' }, { status: 400 });
+    }
+    const MODEL_LABEL = fleetModel.label;
 
     const qty = parseInt(bikeQuantity, 10);
     const days = parseInt(calculatedDays, 10);
@@ -47,7 +52,7 @@ export async function POST(request) {
       {
         p_start_date: startDate,
         p_end_date: endDate,
-        p_model: siteConfig.fleet.model,
+        p_model: fleetModel.id,
         p_location: siteConfig.fleet.location
       }
     );
@@ -62,7 +67,7 @@ export async function POST(request) {
       );
     }
 
-    const { total } = calculateBookingTotal({ days, bikeQuantity: qty });
+    const { total } = calculateBookingTotal({ days, bikeQuantity: qty, model: fleetModel.id });
     // Placeholder refundable deposit, collected in person (not processed
     // online — Xopa has no card-hold/AUTH integration yet, unlike Overland's
     // $1000-per-bike PagueloFacil AUTH hold).
@@ -83,7 +88,7 @@ export async function POST(request) {
           start_date: startDate,
           end_date: endDate,
           bike_quantity: qty,
-          motorcycle_model: siteConfig.fleet.model,
+          motorcycle_model: fleetModel.id,
           pickup_location: siteConfig.fleet.location,
           total_price: total,
           down_payment: total, // full amount — see module comment

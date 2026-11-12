@@ -33,7 +33,7 @@ export async function GET(request, { params }) {
 
     const { data: bookingMotorcycles } = await supabase
       .from('booking_motorcycles')
-      .select('motorcycle_id, motorcycles ( id, name, model )')
+      .select('motorcycle_id, motorcycles ( id, name, model, plate )')
       .eq('booking_id', id);
 
     const assigned = (bookingMotorcycles || []).map((bm) => bm.motorcycles).filter(Boolean);

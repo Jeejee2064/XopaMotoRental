@@ -9,7 +9,7 @@ import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
 import ButtonPrimary from '@/components/ButtonPrimary';
 import ButtonSecondary from '@/components/ButtonSecondary';
-import { siteConfig } from '@/lib/site-config';
+import { siteConfig, getFleetModel } from '@/lib/site-config';
 import { trackFunnelStep } from '@/lib/analytics/track';
 
 export default function BookingSuccessPage() {
@@ -129,7 +129,7 @@ export default function BookingSuccessPage() {
                 <div className="flex justify-between py-2 border-b border-gris/10">
                   <span className="text-gris text-sm">{t('motoLabel')}</span>
                   <span className="text-white text-sm">
-                    {booking.bike_quantity} × SPI {booking.motorcycle_model}
+                    {booking.bike_quantity} × {getFleetModel(booking.motorcycle_model).label}
                   </span>
                 </div>
                 <div className="flex justify-between py-2 border-b border-gris/10">

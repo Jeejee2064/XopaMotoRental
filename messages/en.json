@@ -2,7 +2,7 @@
   "Navigation": {
     "logoText": "XOPA",
     "logoAlt": "XOPA Moto Rental",
-    "navFleet": "RX250",
+    "navFleet": "Fleet",
     "navHowItWorks": "How it works",
     "navPricing": "Pricing",
     "navContact": "Contact",
@@ -35,8 +35,8 @@
   },
   "Metadata": {
     "title": "XOPA Moto Rental — Motorcycle rental in Panama City",
-    "description": "Rent a SPI RX250 in Panama City by the day, week or month. Helmet, keys, city. Clear rates, young bikes, urban vibe.",
-    "keywords": ["motorcycle rental Panama", "Panama City moto rental", "SPI RX250", "cheap moto rental Panama", "XOPA moto rental"]
+    "description": "Rent a motorcycle in Panama City by the day, week or month: SPI RX250 or BMW G310 GS. Helmet, keys, city. Clear rates, young bikes, urban vibe.",
+    "keywords": ["motorcycle rental Panama", "Panama City moto rental", "SPI RX250", "BMW G310 GS", "cheap moto rental Panama", "XOPA moto rental"]
   },
   "NotFound": {
     "title": "This street doesn't exist",
@@ -54,8 +54,8 @@
   "BookingPage": {
     "title": "Book your ride",
     "subtitle": "Pick your dates, tell us who you are, and you're set.",
-    "step1Title": "1. Number of bikes",
-    "step1Subtitle": "How many bikes do you need?",
+    "step1Title": "1. Choose your bike",
+    "step1Subtitle": "Which bike do you want to rent?",
     "howManyBikes": "How many bikes?",
     "bike": "bike",
     "bikes": "bikes",
@@ -127,7 +127,7 @@
   },
   "BookingMetadata": {
     "title": "Book your ride",
-    "description": "Book your SPI RX250 in Panama City: pick your dates, bike quantity, and pay online.",
+    "description": "Book your motorcycle in Panama City (SPI RX250 or BMW G310 GS): pick your dates and pay online.",
     "keywords": ["book motorcycle Panama", "XOPA booking", "online moto rental Panama City"]
   },
   "SuccessPage": {
@@ -172,7 +172,7 @@
   },
   "HomePage": {
     "hero": "XOPA. Let's roll.",
-    "heroSubtitle": "Bike in hand, city in your hands. SPI motorcycle rental in Panama City — by the day, week or month.",
+    "heroSubtitle": "Bike in hand, city in your hands. Motorcycle rental in Panama City — by the day, week or month.",
     "bookTrip": "Book your ride",
     "viewFleet": "See the fleet",
     "introTitle": "Helmet, keys, city",
@@ -182,8 +182,8 @@
     "feature3": "Pickup in Casco Viejo and Cinta Costera",
     "feature4": "Direct support on WhatsApp",
     "fleetTitle": "The fleet",
-    "fleetSubtitle": "SPI RX250",
-    "fleetDesc": "High-performance adventure motorcycle with a rugged, versatile design, premium components and superior comfort. Ideal for riders looking for limitless experiences on any terrain.",
+    "fleetSubtitle": "SPI RX250 & BMW G 310 GS",
+    "fleetDesc": "Two agile, comfortable adventure bikes for the city and the open road: the SPI RX250 and the new BMW G 310 GS. Pick yours when you book.",
     "fleetCta": "See full spec sheet",
     "galleryTitle": "See it in action",
     "galleryDesc": "Real riders, real streets — Casco Viejo and beyond.",
@@ -206,31 +206,46 @@
   },
   "FleetPage": {
     "title": "The XOPA fleet",
-    "intro": "We're starting with one well-chosen model. More cc's coming soon.",
-    "modelBrand": "SPI",
-    "modelName": "RX250",
-    "modelTagline": "High-performance adventure motorcycle",
-    "modelDesc": "High-performance adventure motorcycle with a rugged, versatile design, premium components and superior comfort. Ideal for riders looking for limitless experiences on any terrain.",
+    "intro": "Two adventure bikes to get around Panama City and beyond — pick yours.",
     "specsTitle": "Spec sheet",
     "specDisplacement": "Displacement",
-    "specDisplacementValue": "250cc",
     "specCategory": "Category",
-    "specCategoryValue": "Adventure / off-road capable",
     "specUse": "Recommended use",
-    "specUseValue": "City and highway",
     "specComfort": "Comfort",
-    "specComfortValue": "Premium components",
     "includedTitle": "Included in the rental",
     "included1": "Helmet",
     "included2": "Basic insurance",
     "included3": "WhatsApp assistance",
     "included4": "Unlimited mileage within Panama City",
-    "cta": "Book the RX250"
+    "cta": "Book now",
+    "photoCredit": "BMW G 310 GS photos:",
+    "rx250": {
+      "brand": "SPI",
+      "name": "RX250",
+      "tagline": "High-performance adventure motorcycle",
+      "desc": "High-performance adventure motorcycle with a rugged, versatile design, premium components and superior comfort. Ideal for riders looking for limitless experiences on any terrain.",
+      "specDisplacementValue": "250cc",
+      "specCategoryValue": "Adventure / off-road capable",
+      "specUseValue": "City and highway",
+      "specComfortValue": "Premium components",
+      "cta": "Book the RX250"
+    },
+    "g310gs": {
+      "brand": "BMW",
+      "name": "G 310 GS",
+      "tagline": "BMW Motorrad lightweight adventure",
+      "desc": "The BMW G 310 GS: light, agile and easy to ride, with an upright seating position and ABS. Perfect for the city, the highway and light dirt roads.",
+      "specDisplacementValue": "313cc",
+      "specCategoryValue": "Adventure / travel enduro",
+      "specUseValue": "City, highway and light trails",
+      "specComfortValue": "Upright position and ABS",
+      "cta": "Book the G 310 GS"
+    }
   },
   "FleetMetadata": {
-    "title": "Fleet — SPI RX250",
-    "description": "Meet the SPI RX250, the first bike in the XOPA fleet in Panama City. Adventure-ready, agile and built for the city.",
-    "keywords": ["SPI RX250", "XOPA fleet", "adventure motorcycle Panama", "small displacement moto rental"]
+    "title": "Fleet — SPI RX250 and BMW G310 GS",
+    "description": "Meet the XOPA fleet in Panama City: SPI RX250 and BMW G 310 GS, agile adventure motorcycles built for the city.",
+    "keywords": ["SPI RX250", "BMW G310 GS", "XOPA fleet", "adventure motorcycle Panama", "motorcycle rental Panama City"]
   },
   "PricingPage": {
     "title": "Pricing",
@@ -254,7 +269,7 @@
   },
   "PricingMetadata": {
     "title": "Pricing — Day, week and month",
-    "description": "SPI RX250 rental rates in Panama City: by the day, week or month. Prices built for longer stays.",
+    "description": "Motorcycle rental rates in Panama City (SPI RX250 and BMW G310 GS): by the day, week or month. Prices built for longer stays.",
     "keywords": ["motorcycle rental price Panama", "moto rental rates", "cheap moto Panama City"]
   },
   "HowItWorksPage": {

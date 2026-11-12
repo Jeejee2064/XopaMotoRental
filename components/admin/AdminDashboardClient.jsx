@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getAllBookings } from '@/lib/supabase/bookings';
 import { getAllMessages } from '@/lib/supabase/messages';
-import { getRentalPriceForDays } from '@/lib/pricing';
+import { getRentalPriceForDays, getPricingForModel } from '@/lib/pricing';
 
 import AdminHeader from '@/components/admin/AdminHeader';
 import AdminNavigation from '@/components/admin/AdminNavigation';
@@ -28,6 +28,7 @@ const EMPTY_BOOKING = {
   start_date: '',
   end_date: '',
   bike_quantity: 1,
+  motorcycle_model: 'RX250',
   total_price: 0,
   down_payment: 0,
   deposit: 0,
@@ -247,7 +248,7 @@ const AdminDashboardClient = () => {
     return Math.ceil(Math.abs(end - start) / (1000 * 60 * 60 * 24)) + 1;
   };
 
-  const calculatePrice = () => getRentalPriceForDays(calculateDays());
+  const calculatePrice = () => getRentalPriceForDays(calculateDays(), getPricingForModel(newBooking.motorcycle_model));
 
   useEffect(() => {
     if (newBooking.start_date && newBooking.end_date) {
@@ -261,7 +262,7 @@ const AdminDashboardClient = () => {
       }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [newBooking.start_date, newBooking.end_date, newBooking.bike_quantity]);
+  }, [newBooking.start_date, newBooking.end_date, newBooking.bike_quantity, newBooking.motorcycle_model]);
 
   useEffect(() => {
     const riderCount = Math.max(0, newBooking.bike_quantity - 1);

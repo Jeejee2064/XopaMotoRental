@@ -2,7 +2,7 @@
 --
 -- Mirrors the shape of Overland Motorcycles' Supabase schema (same owners,
 -- same booking/payment architecture), simplified for Xopa's current scope:
--- one location (Panama City) and one model (SPI RX250) to start, but the
+-- one location (Panama City) and two models (SPI RX250, BMW G310 GS), but the
 -- tables are generic enough to grow into more models/locations without a
 -- migration. Overland's own repo has no schema.sql — this file is that
 -- missing piece, kept here so the schema is reproducible and versioned.
@@ -26,7 +26,8 @@ create extension if not exists "pgcrypto";
 -- ============================================================
 create table if not exists public.motorcycles (
   id uuid primary key default gen_random_uuid(),
-  name text not null,                 -- e.g. "RX250 #1", unit label for admin/calendar
+  name text not null,                 -- e.g. "RX250 - MR0262", unit label for admin/calendar
+  plate text,                         -- license plate (placa)
   brand text not null default 'SPI',
   model text not null default 'RX250',
   location text not null default 'Panama City',

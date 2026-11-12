@@ -12,23 +12,23 @@ import Footer from '@/components/Footer';
 import BookingCalendar from '@/components/BookingCalendar';
 import { checkBikesAvailableByModel, getFleetSize } from '@/lib/supabase/bookings';
 import { calculateBookingTotal } from '@/lib/pricing';
-import { siteConfig } from '@/lib/site-config';
+import { siteConfig, getFleetModel } from '@/lib/site-config';
 import { trackFunnelStep } from '@/lib/analytics/track';
 
 const STEP_NAMES = { 1: 'booking_step_quantity', 2: 'booking_step_dates', 3: 'booking_step_details', 4: 'booking_step_review' };
 
-// Xopa has one model/location today, so this is normally a 4-step flow
-// (quantity → dates → details → review+pay) instead of Overland's 5-step one
-// (which starts with picking a location, then a model — there's nothing to
-// pick here yet). Structured so a second location/model later means
-// inserting steps back in, not a rewrite.
+// 4-step flow: model (+ quantity when a model has several bikes) → dates →
+// details → review+pay. One location. Models come from siteConfig.fleet.models;
+// a booking is for a single model (availability, pricing and assignment are
+// all per model).
 //
-// With a single physical bike in the fleet, "how many bikes" has only one
-// possible answer, so that step is pointless — we check the live fleet size
-// on load and skip straight to dates when it's 1. The day a second bike is
-// added to `motorcycles`, the step reappears on its own.
+// The step is only skipped when there is a single model with a single bike
+// (nothing to choose). We read the live fleet size per model from
+// `motorcycles`, so quantity buttons only show up for a model that has more
+// than one bike.
 
-const BIKE_QUANTITY_OPTIONS = [1, 2, 3, 4, 5];
+const MODELS = siteConfig.fleet.models;
+const MAX_BIKE_QUANTITY = 5;
 
 const Modal = ({ isOpen, onClose, type, message, t }) => {
   if (!isOpen) return null;
@@ -94,10 +94,13 @@ export default function BookingPage() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [bikeQuantity, setBikeQuantity] = useState(1);
-  // null while we haven't checked yet — treat as "don't skip" so step 1
-  // never flashes and then disappears once the real count comes back.
-  const [fleetSize, setFleetSize] = useState(null);
-  const skipQuantityStep = fleetSize === 1;
+  const [selectedModel, setSelectedModel] = useState(MODELS[0].id);
+  // { RX250: 1, G310GS: 1 } — null while we haven't checked yet, so step 1
+  // never flashes and then disappears once the real counts come back.
+  const [fleetSizes, setFleetSizes] = useState(null);
+  const modelInfo = getFleetModel(selectedModel);
+  const selectedFleetSize = fleetSizes?.[selectedModel] ?? 0;
+  const skipQuantityStep = MODELS.length === 1 && fleetSizes?.[MODELS[0].id] === 1;
   const [availabilityError, setAvailabilityError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
@@ -143,9 +146,9 @@ export default function BookingPage() {
     return Math.ceil(Math.abs(parseLocalDate(endDate) - parseLocalDate(startDate)) / (1000 * 60 * 60 * 24)) + 1;
   };
 
-  const checkAvailability = async (start, end, qty) => {
+  const checkAvailability = async (start, end, qty, model = selectedModel) => {
     try {
-      const available = await checkBikesAvailableByModel(start, end, siteConfig.fleet.model, siteConfig.fleet.location);
+      const available = await checkBikesAvailableByModel(start, end, model, siteConfig.fleet.location);
       if (available < qty) {
         setAvailabilityError(t('availabilityError', { available }));
         return { ok: false, available };
@@ -164,6 +167,13 @@ export default function BookingPage() {
     setStartDate(start);
     setEndDate(end);
     if (start && end) await checkAvailability(start, end, bikeQuantity);
+  };
+
+  const handleModelSelect = async (modelId) => {
+    if (modelId === selectedModel) return;
+    setSelectedModel(modelId);
+    setBikeQuantity(1);
+    if (startDate && endDate) await checkAvailability(startDate, endDate, 1, modelId);
   };
 
   const handleBikeQuantitySelect = async (num) => {
@@ -192,10 +202,15 @@ export default function BookingPage() {
   useEffect(() => {
     let cancelled = false;
     (async () => {
-      const size = await getFleetSize(siteConfig.fleet.model, siteConfig.fleet.location);
+      const sizes = {};
+      await Promise.all(
+        MODELS.map(async (m) => {
+          sizes[m.id] = await getFleetSize(m.id, siteConfig.fleet.location);
+        })
+      );
       if (cancelled) return;
-      setFleetSize(size);
-      if (size === 1) {
+      setFleetSizes(sizes);
+      if (MODELS.length === 1 && sizes[MODELS[0].id] === 1) {
         setBikeQuantity(1);
         setCurrentStep((step) => (step === 1 ? 2 : step));
       }
@@ -206,11 +221,11 @@ export default function BookingPage() {
   }, []);
 
   const days = calculateDays();
-  const { rentalPrice, subtotal, tax, cardFee, total } = calculateBookingTotal({ days, bikeQuantity });
+  const { rentalPrice, subtotal, tax, cardFee, total } = calculateBookingTotal({ days, bikeQuantity, model: selectedModel });
   const depositPerBike = 375;
   const totalDeposit = depositPerBike * bikeQuantity;
 
-  const canProceedQuantity = bikeQuantity > 0;
+  const canProceedQuantity = bikeQuantity > 0 && (fleetSizes === null || selectedFleetSize > 0);
   const canProceedDates = startDate && endDate && days > 0 && !availabilityError;
   const canProceedStep2 =
     formData.firstName.trim() &&
@@ -234,7 +249,7 @@ export default function BookingPage() {
     if (isSubmitting) return;
     setIsSubmitting(true);
     try {
-      const available = await checkBikesAvailableByModel(startDate, endDate, siteConfig.fleet.model, siteConfig.fleet.location);
+      const available = await checkBikesAvailableByModel(startDate, endDate, selectedModel, siteConfig.fleet.location);
       if (available < bikeQuantity) {
         showModal('error', t('availabilityErrorSubmit', { available }));
         setIsSubmitting(false);
@@ -252,6 +267,7 @@ export default function BookingPage() {
           startDate,
           endDate,
           bikeQuantity,
+          model: selectedModel,
           calculatedDays: days,
           locale,
           specialRequests: formData.specialRequests,
@@ -270,7 +286,7 @@ export default function BookingPage() {
       trackFunnelStep('booking_payment_initiated', {
         path: '/booking',
         locale,
-        metadata: { bikeQuantity, days, total, hearAboutUs: formData.hearAboutUs || null }
+        metadata: { model: selectedModel, bikeQuantity, days, total, hearAboutUs: formData.hearAboutUs || null }
       });
       window.location.href = url;
     } catch (error) {
@@ -304,22 +320,40 @@ export default function BookingPage() {
                 <h2 className="text-2xl font-heading font-bold text-white text-center mb-1">{t('step1Title')}</h2>
                 <p className="text-gris text-center text-sm mb-6">{t('step1Subtitle')}</p>
 
-                <div className="mb-6">
-                  <div className="grid grid-cols-5 gap-2 max-w-md mx-auto">
-                    {BIKE_QUANTITY_OPTIONS.map((num) => (
-                      <button
-                        key={num}
-                        onClick={() => handleBikeQuantitySelect(num)}
-                        className={`p-3 border-2 transition-colors duration-150 ${
-                          bikeQuantity === num ? 'border-jaune bg-jaune/10' : 'border-gris/20 hover:border-gris/40'
-                        }`}
-                      >
-                        <div className="text-2xl font-heading font-black text-jaune">{num}</div>
-                        <div className="text-xs text-gris">{num === 1 ? t('bike') : t('bikes')}</div>
-                      </button>
-                    ))}
-                  </div>
+                <div className="grid sm:grid-cols-2 gap-3 max-w-xl mx-auto mb-6">
+                  {MODELS.map((m) => (
+                    <button
+                      key={m.id}
+                      onClick={() => handleModelSelect(m.id)}
+                      className={`p-5 border-2 text-left transition-colors duration-150 ${
+                        selectedModel === m.id ? 'border-jaune bg-jaune/10' : 'border-gris/20 hover:border-gris/40'
+                      }`}
+                    >
+                      <div className="text-xs text-gris uppercase tracking-wide">{m.brand}</div>
+                      <div className="text-2xl font-heading font-black text-jaune">{m.name}</div>
+                    </button>
+                  ))}
                 </div>
+
+                {selectedFleetSize > 1 && (
+                  <div className="mb-6">
+                    <p className="text-gris text-center text-sm mb-3">{t('howManyBikes')}</p>
+                    <div className="grid grid-cols-5 gap-2 max-w-md mx-auto">
+                      {Array.from({ length: Math.min(selectedFleetSize, MAX_BIKE_QUANTITY) }, (_, i) => i + 1).map((num) => (
+                        <button
+                          key={num}
+                          onClick={() => handleBikeQuantitySelect(num)}
+                          className={`p-3 border-2 transition-colors duration-150 ${
+                            bikeQuantity === num ? 'border-jaune bg-jaune/10' : 'border-gris/20 hover:border-gris/40'
+                          }`}
+                        >
+                          <div className="text-2xl font-heading font-black text-jaune">{num}</div>
+                          <div className="text-xs text-gris">{num === 1 ? t('bike') : t('bikes')}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 <div className="mt-6 flex justify-end">
                   <button
@@ -341,7 +375,7 @@ export default function BookingPage() {
                 <h2 className="text-2xl font-heading font-bold text-white text-center mb-1">{t('step2Title')}</h2>
                 <p className="text-gris text-center text-sm mb-6">{t('step2Subtitle')}</p>
 
-                <BookingCalendar onDateRangeChange={handleDateRangeChange} />
+                <BookingCalendar key={selectedModel} model={selectedModel} onDateRangeChange={handleDateRangeChange} />
 
                 {availabilityError && (
                   <div className="mt-4 p-3 bg-cyan/10 border border-cyan/50 flex items-start gap-3">
@@ -357,7 +391,7 @@ export default function BookingPage() {
                         {formatDisplayDate(startDate)} → {formatDisplayDate(endDate)}
                       </div>
                       <div className="text-lg font-bold text-white mt-1">
-                        {days} {days === 1 ? t('day') : t('days')} × {bikeQuantity} {bikeQuantity === 1 ? t('bike') : t('bikes')}
+                        {modelInfo.label} · {days} {days === 1 ? t('day') : t('days')} × {bikeQuantity} {bikeQuantity === 1 ? t('bike') : t('bikes')}
                       </div>
                     </div>
                     <div className="text-right">
@@ -558,7 +592,7 @@ export default function BookingPage() {
                     </div>
                     <div>
                       <div className="text-xs text-gris">{t('summaryModel')}</div>
-                      <div className="text-sm font-bold text-jaune">SPI {siteConfig.fleet.model}</div>
+                      <div className="text-sm font-bold text-jaune">{modelInfo.label}</div>
                     </div>
                     <div>
                       <div className="text-xs text-gris">{t('summaryMotorcycles')}</div>

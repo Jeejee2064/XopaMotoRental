@@ -10,11 +10,9 @@ import 'react-date-range/dist/theme/default.css';
 
 const DATE_FNS_LOCALES = { es, en: enUS, fr };
 
-// Xopa has one model/location, so — unlike Overland's Coronado/Panama City
-// branching — this always checks the same (model, location) pair, and the
-// bike count comes from the real fleet size in `motorcycles`, not a
-// hardcoded fallback.
-export default function BookingCalendar({ onDateRangeChange }) {
+// Availability is per (model, location): the parent passes the selected
+// model, and the bike count comes from the real fleet size in `motorcycles`.
+export default function BookingCalendar({ onDateRangeChange, model }) {
   const t = useTranslations('calendar');
   const locale = useLocale();
   const [availabilityMap, setAvailabilityMap] = useState({});
@@ -40,8 +38,8 @@ export default function BookingCalendar({ onDateRangeChange }) {
       setLoading(true);
       try {
         const [data, fleetSize] = await Promise.all([
-          checkBikesAvailabilityRangeByModel(siteConfig.fleet.model, siteConfig.fleet.location),
-          getFleetSize(siteConfig.fleet.model, siteConfig.fleet.location)
+          checkBikesAvailabilityRangeByModel(model, siteConfig.fleet.location),
+          getFleetSize(model, siteConfig.fleet.location)
         ]);
         setAvailabilityMap(data || {});
         setMaxBikes(fleetSize || 0);
@@ -52,7 +50,7 @@ export default function BookingCalendar({ onDateRangeChange }) {
       }
     };
     fetchAvailability();
-  }, []);
+  }, [model]);
 
   const isSelected = (day) => {
     const start = selectedRange?.startDate;

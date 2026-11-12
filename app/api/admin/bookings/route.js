@@ -54,6 +54,7 @@ export async function POST(request) {
     const startDate = new Date(newBooking.start_date);
     const endDate = new Date(newBooking.end_date);
     const needed = newBooking.bike_quantity || 1;
+    const fleetModel = siteConfig.fleet.models.find((m) => m.id === newBooking.motorcycle_model) || siteConfig.fleet.models[0];
 
     // 1. Which motorcycles are already committed to an overlapping booking
     const { data: overlappingBookings, error: overlapError } = await supabase
@@ -75,7 +76,7 @@ export async function POST(request) {
     const { data: fleetMotorcycles, error: motoError } = await supabase
       .from('motorcycles')
       .select('*')
-      .eq('model', siteConfig.fleet.model)
+      .eq('model', fleetModel.id)
       .eq('location', siteConfig.fleet.location)
       .eq('is_available', true)
       .order('name');
@@ -102,7 +103,7 @@ export async function POST(request) {
         start_date: newBooking.start_date,
         end_date: newBooking.end_date,
         bike_quantity: needed,
-        motorcycle_model: siteConfig.fleet.model,
+        motorcycle_model: fleetModel.id,
         pickup_location: siteConfig.fleet.location,
         total_price: newBooking.total_price,
         down_payment: newBooking.down_payment,

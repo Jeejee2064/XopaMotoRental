@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import { getFleetModel } from '@/lib/site-config';
 
 function StatusBadge({ status }) {
   const map = {
@@ -202,7 +203,7 @@ export default function BookingSharePage() {
               border: '1px solid rgba(255,255,255,0.12)',
               borderRadius: 20, padding: '4px 12px', fontSize: 12, fontWeight: 600,
             }}>
-              🏍️ SPI RX250
+              🏍️ {getFleetModel(booking.motorcycle_model).label}
             </span>
             <span style={{
               background: 'rgba(255,255,255,0.08)', color: '#e8d5b0',
@@ -280,7 +281,7 @@ export default function BookingSharePage() {
                   <span style={{ fontSize: 20 }}>🏍️</span>
                   <div>
                     <div style={{ fontWeight: 700, fontSize: 14, color: '#1c1814' }}>{moto.name}</div>
-                    <div style={{ fontSize: 12, color: '#9c8e7e', marginTop: 1 }}>{moto.model || 'SPI RX250'}</div>
+                    <div style={{ fontSize: 12, color: '#9c8e7e', marginTop: 1 }}>{getFleetModel(moto.model || booking.motorcycle_model).label}{moto.plate ? ` · ${moto.plate}` : ''}</div>
                   </div>
                 </div>
               ))}

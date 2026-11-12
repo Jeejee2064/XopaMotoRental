@@ -3,12 +3,11 @@ import { Resend } from 'resend';
 import { getSupabaseAdmin } from '@/lib/supabase/admin-client';
 import { generateCustomerEmailHTML } from '@/lib/emails/customerEmail';
 import { generateCompanyEmailHTML } from '@/lib/emails/companyEmail';
-import { siteConfig } from '@/lib/site-config';
+import { siteConfig, getFleetModel } from '@/lib/site-config';
 
 export const runtime = 'nodejs';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-const MODEL_LABEL = 'SPI RX250';
 
 export async function POST(request) {
   const supabase = getSupabaseAdmin();
@@ -75,8 +74,8 @@ export async function POST(request) {
 
     const { data: updatedBooking } = await supabase.from('bookings').select('*').eq('id', bookingId).single();
 
-    // Single model/location — assignment is just "first N available bikes",
-    // no Coronado-style location branching needed.
+    // Assignment = first N available bikes of the booked model.
+    const MODEL_LABEL = getFleetModel(updatedBooking.motorcycle_model).label;
     const startDate = new Date(updatedBooking.start_date);
     const endDate = new Date(updatedBooking.end_date);
 
@@ -98,7 +97,7 @@ export async function POST(request) {
     const { data: fleetMotorcycles } = await supabase
       .from('motorcycles')
       .select('*')
-      .eq('model', siteConfig.fleet.model)
+      .eq('model', updatedBooking.motorcycle_model)
       .eq('location', siteConfig.fleet.location)
       .eq('is_available', true)
       .order('name');

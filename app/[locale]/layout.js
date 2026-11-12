@@ -97,7 +97,7 @@ export default async function RootLayout({ children, params }) {
     '@type': 'LocalBusiness',
     '@id': `${baseUrl}#organization`,
     name: siteConfig.companyName,
-    description: 'Alquiler de motos SPI en Panama City por día, semana o mes.',
+    description: 'Alquiler de motos en Panama City por día, semana o mes: SPI RX250 y BMW G310 GS.',
     url: baseUrl,
     logo: {
       '@type': 'ImageObject',
@@ -145,6 +145,14 @@ export default async function RootLayout({ children, params }) {
             '@type': 'Service',
             name: 'SPI RX250 Rental',
             description: 'Small-displacement adventure motorcycle rental in Panama City'
+          }
+        },
+        {
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: 'BMW G 310 GS Rental',
+            description: 'Lightweight adventure motorcycle rental in Panama City'
           }
         }
       ]
